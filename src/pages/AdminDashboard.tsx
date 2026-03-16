@@ -73,9 +73,10 @@ const AdminDashboard = () => {
     checkAuth();
   }, [navigate]);
 
-  const fetchConfig = useCallback(async () => {
-    setLoading(true);
+  const fetchConfig = useCallback(async (silent = false) => {
+    if (!silent) setLoading(true);
     const { data, error } = await supabase.from("tracking_config").select("*");
+
     if (error) {
       toast({ title: "Erreur", description: error.message, variant: "destructive" });
     } else {
@@ -84,20 +85,58 @@ const AdminDashboard = () => {
       setSavedRows(JSON.parse(JSON.stringify(fetched)));
       setHasChanges(false);
     }
-    setLoading(false);
+
+    if (!silent) setLoading(false);
   }, []);
 
   const updateRow = (key: string, field: "value" | "enabled", val: string | boolean) => {
     setRows((prev) => {
       const updated = prev.map((r) => (r.key === key ? { ...r, [field]: val } : r));
-      // Check if there are changes compared to saved state
       const changed = updated.some((r) => {
         const saved = savedRows.find((s) => s.key === r.key);
-        return saved && (saved.value !== r.value || saved.enabled !== r.enabled);
+        if (!saved) return true;
+        return saved.value !== r.value || saved.enabled !== r.enabled;
       });
       setHasChanges(changed);
       return updated;
     });
+  };
+
+  const persistRow = useCallback(async (row: TrackingRow) => {
+    const { data, error } = await supabase
+      .from("tracking_config")
+      .update({ value: row.value, enabled: row.enabled, updated_at: new Date().toISOString() })
+      .eq("key", row.key)
+      .select("id");
+
+    if (error) {
+      return { ok: false, message: error.message };
+    }
+
+    if (!data || data.length === 0) {
+      return {
+        ok: false,
+        message: "Aucune ligne mise à jour (droits insuffisants ou configuration introuvable).",
+      };
+    }
+
+    return { ok: true, message: "" };
+  }, []);
+
+  const handleToggle = async (row: TrackingRow, enabled: boolean) => {
+    updateRow(row.key, "enabled", enabled);
+
+    setSaving(true);
+    const result = await persistRow({ ...row, enabled });
+
+    if (!result.ok) {
+      toast({ title: "Erreur", description: `${row.key}: ${result.message}`, variant: "destructive" });
+    } else {
+      toast({ title: "✅ Sauvegardé", description: `${TRACKER_META[row.key]?.label ?? row.key} mis à jour.` });
+    }
+
+    await fetchConfig(true);
+    setSaving(false);
   };
 
   const handleSave = async () => {
@@ -105,32 +144,22 @@ const AdminDashboard = () => {
     let hasError = false;
 
     for (const row of rows) {
-      const { error } = await supabase
-        .from("tracking_config")
-        .update({ value: row.value, enabled: row.enabled, updated_at: new Date().toISOString() })
-        .eq("id", row.id);
-
-      if (error) {
-        toast({ title: "Erreur", description: `${row.key}: ${error.message}`, variant: "destructive" });
+      const result = await persistRow(row);
+      if (!result.ok) {
+        toast({ title: "Erreur", description: `${row.key}: ${result.message}`, variant: "destructive" });
         hasError = true;
         break;
       }
     }
 
     if (!hasError) {
-      // Re-fetch to confirm persistence
-      const { data } = await supabase.from("tracking_config").select("*");
-      if (data) {
-        const fetched = data as TrackingRow[];
-        setRows(fetched);
-        setSavedRows(JSON.parse(JSON.stringify(fetched)));
-        setHasChanges(false);
-      }
+      await fetchConfig(true);
       toast({
         title: "✅ Sauvegardé",
         description: "Configuration tracking mise à jour. Les changements sont actifs immédiatement.",
       });
     }
+
     setSaving(false);
   };
 
@@ -192,7 +221,8 @@ const AdminDashboard = () => {
                     )}
                     <Switch
                       checked={row.enabled}
-                      onCheckedChange={(v) => updateRow(row.key, "enabled", v)}
+                      disabled={saving}
+                      onCheckedChange={(v) => handleToggle(row, v)}
                     />
                   </div>
                 </div>
