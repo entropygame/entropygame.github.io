@@ -14,7 +14,7 @@ const translations: Record<Lang, {
   en: {
     headline: "Command the Unknown. Conquer the Galaxy.",
     subheadline: "Explore uncharted planets. Recruit alien heroes. Build, fight, dominate.",
-    cta: "Pre-Order Now",
+    cta: "Download Now",
     platform: "Available on Windows Desktop",
     badge1: "Grand Winner — Best Game 2026",
     badge2: "Players' Choice Award",
