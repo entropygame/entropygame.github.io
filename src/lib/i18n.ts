@@ -47,7 +47,7 @@ const translations: Record<Lang, {
   fr: {
     headline: "Commandez l'inconnu. Conquérez la galaxie.",
     subheadline: "Explorez des planètes inconnues. Recrutez des héros aliens. Construisez, combattez, dominez.",
-    cta: "Précommander",
+    cta: "Télécharger",
     platform: "Disponible sur Windows Desktop",
     badge1: "Grand gagnant — Meilleur jeu 2026",
     badge2: "Prix du choix des joueurs",
