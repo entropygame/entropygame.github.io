@@ -58,7 +58,7 @@ const translations: Record<Lang, {
   es: {
     headline: "Comanda lo desconocido. Conquista la galaxia.",
     subheadline: "Explora planetas desconocidos. Recluta héroes alienígenas. Construye, lucha, domina.",
-    cta: "Pre-ordenar ahora",
+    cta: "Descargar ahora",
     platform: "Disponible en Windows Desktop",
     badge1: "Gran ganador — Mejor juego 2026",
     badge2: "Premio elección de jugadores",

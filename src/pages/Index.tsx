@@ -102,7 +102,7 @@ const Index = () => {
         </div>
 
         {/* Legal footer */}
-        <p className="text-[10px] text-muted-foreground/40 tracking-wide font-body">
+        <p className="text-[10px] text-muted-foreground/40 tracking-wide font-body text-center">
           {strings.legal}
         </p>
       </div>
