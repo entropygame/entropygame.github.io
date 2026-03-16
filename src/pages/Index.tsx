@@ -82,9 +82,9 @@ const Index = () => {
             </p>
 
             {/* CTA */}
-            <button className="cta-glow font-display font-bold text-2xl lg:text-3xl tracking-widest uppercase px-14 py-4 bg-gradient-to-b from-entropy-gold to-entropy-orange text-foreground rounded-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-ring" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.5), 0 1px 0 rgba(0,0,0,0.3)', WebkitTextStroke: '0.5px rgba(255,255,255,0.1)' }}>
+            <a href="https://to.wendiro.com/u?k=220e77cdef8b42929dd5c06ff71b4ae5&via=5326" target="_blank" rel="noopener noreferrer" className="inline-block cta-glow font-display font-bold text-2xl lg:text-3xl tracking-widest uppercase px-14 py-4 bg-gradient-to-b from-entropy-gold to-entropy-orange text-foreground rounded-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-ring" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.5), 0 1px 0 rgba(0,0,0,0.3)', WebkitTextStroke: '0.5px rgba(255,255,255,0.1)' }}>
               {strings.cta}
-            </button>
+            </a>
 
             {/* Platform line */}
             <p className="mt-4 text-xs tracking-wider uppercase text-muted-foreground/70 font-body flex items-center justify-center gap-1.5">
