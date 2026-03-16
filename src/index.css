@@ -49,13 +49,13 @@
 
     --overlay-heavy: linear-gradient(
       135deg,
-      hsla(230, 30%, 4%, 0.92) 0%,
-      hsla(235, 25%, 10%, 0.80) 40%,
-      hsla(270, 35%, 18%, 0.60) 100%
+      hsla(230, 30%, 4%, 0.65) 0%,
+      hsla(235, 25%, 10%, 0.45) 40%,
+      hsla(270, 35%, 18%, 0.30) 100%
     );
     --overlay-bottom: linear-gradient(
       to top,
-      hsla(230, 30%, 4%, 0.95) 0%,
+      hsla(230, 30%, 4%, 0.70) 0%,
       transparent 40%
     );
 
@@ -94,12 +94,18 @@
   }
 
   .cta-glow {
-    box-shadow: var(--shadow-cta);
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 0 20px -5px hsl(var(--entropy-gold) / 0.5);
+    animation: cta-pulse 2s ease-in-out infinite;
   }
 
   .cta-glow:hover {
-    box-shadow: var(--shadow-cta-hover);
-    transform: translateY(-1px);
+    box-shadow: 0 0 30px -5px hsl(var(--entropy-gold) / 0.7);
+    animation-play-state: paused;
+    transform: scale(1.05);
+  }
+
+  @keyframes cta-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.06); }
   }
 }

@@ -14,7 +14,7 @@ const translations: Record<Lang, {
   en: {
     headline: "Command the Unknown. Conquer the Galaxy.",
     subheadline: "Explore uncharted planets. Recruit alien heroes. Build, fight, dominate.",
-    cta: "Pre-Order Now",
+    cta: "Download Now",
     platform: "Available on Windows Desktop",
     badge1: "Grand Winner — Best Game 2026",
     badge2: "Players' Choice Award",
@@ -25,7 +25,7 @@ const translations: Record<Lang, {
   de: {
     headline: "Befehle das Unbekannte. Erobere die Galaxie.",
     subheadline: "Erforsche unbekannte Planeten. Rekrutiere Alien-Helden. Baue, kämpfe, dominiere.",
-    cta: "Jetzt vorbestellen",
+    cta: "Jetzt herunterladen",
     platform: "Verfügbar für Windows Desktop",
     badge1: "Hauptgewinner — Bestes Spiel 2026",
     badge2: "Spielerwahl-Auszeichnung",
@@ -36,7 +36,7 @@ const translations: Record<Lang, {
   ru: {
     headline: "Покоряй неизведанное. Завоюй галактику.",
     subheadline: "Исследуй неизвестные планеты. Вербуй инопланетных героев. Строй, сражайся, доминируй.",
-    cta: "Предзаказ",
+    cta: "Скачать сейчас",
     platform: "Доступно на Windows",
     badge1: "Гран-при — Лучшая игра 2026",
     badge2: "Выбор игроков",
@@ -47,7 +47,7 @@ const translations: Record<Lang, {
   fr: {
     headline: "Commandez l'inconnu. Conquérez la galaxie.",
     subheadline: "Explorez des planètes inconnues. Recrutez des héros aliens. Construisez, combattez, dominez.",
-    cta: "Précommander",
+    cta: "Télécharger",
     platform: "Disponible sur Windows Desktop",
     badge1: "Grand gagnant — Meilleur jeu 2026",
     badge2: "Prix du choix des joueurs",
@@ -58,7 +58,7 @@ const translations: Record<Lang, {
   es: {
     headline: "Comanda lo desconocido. Conquista la galaxia.",
     subheadline: "Explora planetas desconocidos. Recluta héroes alienígenas. Construye, lucha, domina.",
-    cta: "Pre-ordenar ahora",
+    cta: "Descargar ahora",
     platform: "Disponible en Windows Desktop",
     badge1: "Gran ganador — Mejor juego 2026",
     badge2: "Premio elección de jugadores",
