@@ -1,16 +1,122 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useMemo } from "react";
+import { detectLanguage, t } from "@/lib/i18n";
+import { isWindowsDesktop, getSessionVideo } from "@/lib/platform";
+import logoEntropy from "@/assets/logo-entropy.png";
+import { Trophy, Star, Monitor } from "lucide-react";
 
-// IMPORTANT: Fully REPLACE this with your own code
-const PlaceholderIndex = () => {
-  // PLACEHOLDER: Replace this entire return statement with the user's app.
-  // The inline background color is intentionally not part of the design system.
+const POSTER = "/images/poster-fallback.jpg";
+
+const Index = () => {
+  const lang = useMemo(() => detectLanguage(), []);
+  const strings = useMemo(() => t(lang), [lang]);
+  const videoSrc = useMemo(() => getSessionVideo(), []);
+  const isWindows = useMemo(() => isWindowsDesktop(), []);
+
+  if (!isWindows) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-background">
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-30"
+          style={{ backgroundImage: `url(${POSTER})` }}
+        />
+        <div className="relative z-10 text-center px-8 max-w-xl">
+          <img
+            src={logoEntropy}
+            alt="Project Entropy"
+            className="w-64 mx-auto mb-8 opacity-80"
+          />
+          <p className="font-display text-xl md:text-2xl tracking-wide text-foreground/80">
+            {strings.windowsOnly}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
+    <div className="fixed inset-0 overflow-hidden bg-background">
+      {/* Video background */}
+      <video
+        key={videoSrc}
+        autoPlay
+        muted
+        loop
+        playsInline
+        poster={POSTER}
+        className="absolute inset-0 w-full h-full object-cover"
+      >
+        <source src={videoSrc} type="video/mp4" />
+      </video>
+
+      {/* Cinematic overlays */}
+      <div
+        className="absolute inset-0"
+        style={{ background: "var(--overlay-heavy)" }}
+      />
+      <div
+        className="absolute inset-0"
+        style={{ background: "var(--overlay-bottom)" }}
+      />
+
+      {/* Content */}
+      <div className="relative z-10 h-full flex flex-col justify-between px-12 py-10 lg:px-20 lg:py-12">
+        {/* Main content — center-left */}
+        <div className="flex-1 flex items-center">
+          <div className="max-w-2xl animate-fade-in">
+            {/* Logo */}
+            <img
+              src={logoEntropy}
+              alt="Project Entropy"
+              className="w-72 lg:w-96 mb-6 drop-shadow-2xl"
+              loading="eager"
+            />
+
+            {/* Headline */}
+            <h1 className="font-display font-bold text-3xl lg:text-5xl xl:text-[3.4rem] leading-tight tracking-wide text-foreground text-shadow-hero mb-3">
+              {strings.headline}
+            </h1>
+
+            {/* Subheadline */}
+            <p className="font-body text-base lg:text-lg text-muted-foreground tracking-wide mb-8 max-w-lg">
+              {strings.subheadline}
+            </p>
+
+            {/* CTA */}
+            <button className="cta-glow font-display font-semibold text-lg lg:text-xl tracking-widest uppercase px-10 py-3.5 bg-primary text-primary-foreground border border-entropy-cyan/30 rounded-sm transition-all duration-300 hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring">
+              {strings.cta}
+            </button>
+
+            {/* Platform line */}
+            <p className="mt-4 text-xs tracking-wider uppercase text-muted-foreground/70 font-body flex items-center gap-1.5">
+              <Monitor className="w-3.5 h-3.5" />
+              {strings.platform}
+            </p>
+
+            {/* Badges */}
+            <div className="mt-8 flex flex-wrap items-center gap-5">
+              <Badge icon={<Trophy className="w-4 h-4 text-entropy-gold" />} text={strings.badge1} />
+              <Badge icon={<Star className="w-4 h-4 text-entropy-cyan" />} text={strings.badge2} />
+              <Badge icon={<Monitor className="w-4 h-4 text-muted-foreground" />} text={strings.badge3} />
+            </div>
+          </div>
+        </div>
+
+        {/* Legal footer */}
+        <p className="text-[10px] text-muted-foreground/40 tracking-wide font-body">
+          {strings.legal}
+        </p>
+      </div>
     </div>
   );
 };
 
-const Index = PlaceholderIndex;
+function Badge({ icon, text }: { icon: React.ReactNode; text: string }) {
+  return (
+    <span className="flex items-center gap-2 text-xs tracking-wider uppercase text-foreground/60 font-body border border-border/40 rounded-sm px-3 py-1.5 bg-muted/20 backdrop-blur-sm">
+      {icon}
+      {text}
+    </span>
+  );
+}
 
 export default Index;
