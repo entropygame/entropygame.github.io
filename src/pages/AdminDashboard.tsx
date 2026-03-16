@@ -56,6 +56,17 @@ const AdminDashboard = () => {
         navigate("/admin/login");
         return;
       }
+      // Check admin role via has_role RPC
+      const { data: isAdmin } = await supabase.rpc("has_role", {
+        _user_id: session.user.id,
+        _role: "admin",
+      });
+      if (!isAdmin) {
+        toast({ title: "Accès refusé", description: "Vous n'avez pas le rôle admin.", variant: "destructive" });
+        await supabase.auth.signOut();
+        navigate("/admin/login");
+        return;
+      }
       fetchConfig();
     };
     checkAuth();
