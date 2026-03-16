@@ -221,7 +221,8 @@ const AdminDashboard = () => {
                     )}
                     <Switch
                       checked={row.enabled}
-                      onCheckedChange={(v) => updateRow(row.key, "enabled", v)}
+                      disabled={saving}
+                      onCheckedChange={(v) => handleToggle(row, v)}
                     />
                   </div>
                 </div>
