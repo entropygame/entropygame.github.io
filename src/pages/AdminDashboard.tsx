@@ -73,9 +73,10 @@ const AdminDashboard = () => {
     checkAuth();
   }, [navigate]);
 
-  const fetchConfig = useCallback(async () => {
-    setLoading(true);
+  const fetchConfig = useCallback(async (silent = false) => {
+    if (!silent) setLoading(true);
     const { data, error } = await supabase.from("tracking_config").select("*");
+
     if (error) {
       toast({ title: "Erreur", description: error.message, variant: "destructive" });
     } else {
@@ -84,7 +85,8 @@ const AdminDashboard = () => {
       setSavedRows(JSON.parse(JSON.stringify(fetched)));
       setHasChanges(false);
     }
-    setLoading(false);
+
+    if (!silent) setLoading(false);
   }, []);
 
   const updateRow = (key: string, field: "value" | "enabled", val: string | boolean) => {
