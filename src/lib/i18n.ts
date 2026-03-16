@@ -45,7 +45,7 @@ const translations: Record<Lang, {
     windowsOnly: "Этот опыт доступен только на настольных компьютерах с Windows.",
   },
   fr: {
-    headline: "Commandez l'inconnu. Conquérez la galaxie.",
+    headline: "Prenez le commandement. Conquérez la galaxie.",
     subheadline: "Explorez des planètes inconnues. Recrutez des héros aliens. Construisez, combattez, dominez.",
     cta: "Télécharger",
     platform: "Disponible sur Windows Desktop",
