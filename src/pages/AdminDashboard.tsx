@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
-import { LogOut, Save, BarChart3, Target, Music, Share2 } from "lucide-react";
+import { LogOut, Save, BarChart3, Target, Music, Share2, CheckCircle2 } from "lucide-react";
 
 type TrackingRow = {
   id: string;
@@ -48,6 +48,8 @@ const AdminDashboard = () => {
   const [rows, setRows] = useState<TrackingRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [hasChanges, setHasChanges] = useState(false);
+  const [savedRows, setSavedRows] = useState<TrackingRow[]>([]);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -56,7 +58,6 @@ const AdminDashboard = () => {
         navigate("/admin/login");
         return;
       }
-      // Check admin role via has_role RPC
       const { data: isAdmin } = await supabase.rpc("has_role", {
         _user_id: session.user.id,
         _role: "admin",
@@ -72,34 +73,64 @@ const AdminDashboard = () => {
     checkAuth();
   }, [navigate]);
 
-  const fetchConfig = async () => {
+  const fetchConfig = useCallback(async () => {
+    setLoading(true);
     const { data, error } = await supabase.from("tracking_config").select("*");
     if (error) {
       toast({ title: "Erreur", description: error.message, variant: "destructive" });
     } else {
-      setRows((data as TrackingRow[]) || []);
+      const fetched = (data as TrackingRow[]) || [];
+      setRows(fetched);
+      setSavedRows(JSON.parse(JSON.stringify(fetched)));
+      setHasChanges(false);
     }
     setLoading(false);
-  };
+  }, []);
 
   const updateRow = (key: string, field: "value" | "enabled", val: string | boolean) => {
-    setRows((prev) => prev.map((r) => (r.key === key ? { ...r, [field]: val } : r)));
+    setRows((prev) => {
+      const updated = prev.map((r) => (r.key === key ? { ...r, [field]: val } : r));
+      // Check if there are changes compared to saved state
+      const changed = updated.some((r) => {
+        const saved = savedRows.find((s) => s.key === r.key);
+        return saved && (saved.value !== r.value || saved.enabled !== r.enabled);
+      });
+      setHasChanges(changed);
+      return updated;
+    });
   };
 
   const handleSave = async () => {
     setSaving(true);
+    let hasError = false;
+
     for (const row of rows) {
       const { error } = await supabase
         .from("tracking_config")
         .update({ value: row.value, enabled: row.enabled, updated_at: new Date().toISOString() })
-        .eq("key", row.key);
+        .eq("id", row.id);
+
       if (error) {
         toast({ title: "Erreur", description: `${row.key}: ${error.message}`, variant: "destructive" });
-        setSaving(false);
-        return;
+        hasError = true;
+        break;
       }
     }
-    toast({ title: "Sauvegardé", description: "Configuration mise à jour avec succès." });
+
+    if (!hasError) {
+      // Re-fetch to confirm persistence
+      const { data } = await supabase.from("tracking_config").select("*");
+      if (data) {
+        const fetched = data as TrackingRow[];
+        setRows(fetched);
+        setSavedRows(JSON.parse(JSON.stringify(fetched)));
+        setHasChanges(false);
+      }
+      toast({
+        title: "✅ Sauvegardé",
+        description: "Configuration tracking mise à jour. Les changements sont actifs immédiatement.",
+      });
+    }
     setSaving(false);
   };
 
@@ -129,12 +160,23 @@ const AdminDashboard = () => {
           </Button>
         </div>
 
+        {rows.length === 0 && (
+          <Card className="border-destructive/50">
+            <CardContent className="pt-6">
+              <p className="text-destructive">Aucune configuration tracking trouvée. Vérifiez la table tracking_config dans Supabase.</p>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Tracker cards */}
         {rows.map((row) => {
           const meta = TRACKER_META[row.key];
           if (!meta) return null;
+          const savedRow = savedRows.find((s) => s.key === row.key);
+          const isChanged = savedRow && (savedRow.value !== row.value || savedRow.enabled !== row.enabled);
+
           return (
-            <Card key={row.key} className="border-border/50">
+            <Card key={row.key} className={`border-border/50 transition-colors ${isChanged ? 'ring-2 ring-primary/30' : ''}`}>
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
@@ -144,10 +186,15 @@ const AdminDashboard = () => {
                       <CardDescription className="text-xs">{meta.description}</CardDescription>
                     </div>
                   </div>
-                  <Switch
-                    checked={row.enabled}
-                    onCheckedChange={(v) => updateRow(row.key, "enabled", v)}
-                  />
+                  <div className="flex items-center gap-2">
+                    {row.enabled && row.value && !isChanged && (
+                      <CheckCircle2 className="h-4 w-4 text-green-500" />
+                    )}
+                    <Switch
+                      checked={row.enabled}
+                      onCheckedChange={(v) => updateRow(row.key, "enabled", v)}
+                    />
+                  </div>
                 </div>
               </CardHeader>
               <CardContent>
@@ -159,16 +206,32 @@ const AdminDashboard = () => {
                     value={row.value}
                     onChange={(e) => updateRow(row.key, "value", e.target.value)}
                   />
+                  {row.enabled && !row.value && (
+                    <p className="text-xs text-destructive">⚠️ Activé mais aucun ID renseigné — le script ne sera pas injecté.</p>
+                  )}
                 </div>
               </CardContent>
             </Card>
           );
         })}
 
-        <Button onClick={handleSave} disabled={saving} className="w-full" size="lg">
+        {/* Save button — always visible and prominent */}
+        <Button
+          onClick={handleSave}
+          disabled={saving || !hasChanges}
+          className="w-full"
+          size="lg"
+          variant={hasChanges ? "default" : "secondary"}
+        >
           <Save className="h-4 w-4 mr-2" />
-          {saving ? "Sauvegarde…" : "Sauvegarder la configuration"}
+          {saving ? "Sauvegarde en cours…" : hasChanges ? "💾 Sauvegarder les modifications" : "Aucune modification"}
         </Button>
+
+        {hasChanges && (
+          <p className="text-center text-xs text-muted-foreground">
+            Vous avez des modifications non sauvegardées. Cliquez sur le bouton ci-dessus pour les enregistrer.
+          </p>
+        )}
       </div>
     </div>
   );
