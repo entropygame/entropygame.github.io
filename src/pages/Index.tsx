@@ -82,7 +82,7 @@ const Index = () => {
             </p>
 
             {/* CTA */}
-            <button className="cta-glow font-display font-bold text-xl lg:text-2xl tracking-widest uppercase px-14 py-4 bg-gradient-to-b from-entropy-gold to-entropy-orange text-primary-foreground rounded-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-ring">
+            <button className="cta-glow font-display font-bold text-2xl lg:text-3xl tracking-widest uppercase px-14 py-4 bg-gradient-to-b from-entropy-gold to-entropy-orange text-foreground rounded-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-ring" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.5), 0 1px 0 rgba(0,0,0,0.3)', WebkitTextStroke: '0.5px rgba(255,255,255,0.1)' }}>
               {strings.cta}
             </button>
 
