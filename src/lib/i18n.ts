@@ -25,7 +25,7 @@ const translations: Record<Lang, {
   de: {
     headline: "Befehle das Unbekannte. Erobere die Galaxie.",
     subheadline: "Erforsche unbekannte Planeten. Rekrutiere Alien-Helden. Baue, kämpfe, dominiere.",
-    cta: "Jetzt vorbestellen",
+    cta: "Jetzt herunterladen",
     platform: "Verfügbar für Windows Desktop",
     badge1: "Hauptgewinner — Bestes Spiel 2026",
     badge2: "Spielerwahl-Auszeichnung",
