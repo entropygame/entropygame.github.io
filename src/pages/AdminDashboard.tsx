@@ -265,6 +265,40 @@ const AdminDashboard = () => {
             Vous avez des modifications non sauvegardées. Cliquez sur le bouton ci-dessus pour les enregistrer.
           </p>
         )}
+
+        {/* Video Upload Section */}
+        <Card className="border-border/50">
+          <CardHeader className="pb-3">
+            <div className="flex items-center gap-3">
+              <Video className="h-5 w-5 text-primary" />
+              <div>
+                <CardTitle className="text-lg font-display">Vidéos de fond</CardTitle>
+                <CardDescription className="text-xs">
+                  Uploader les 6 vidéos (3 WebM + 3 MP4) vers Supabase Storage pour un chargement ultra-rapide.
+                </CardDescription>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="text-xs text-muted-foreground space-y-1">
+              {ALL_VIDEO_FILES.map((f) => (
+                <p key={f.name}>📁 {f.name}</p>
+              ))}
+            </div>
+            {uploadStatus && (
+              <p className="text-xs text-muted-foreground">{uploadStatus}</p>
+            )}
+            <Button
+              onClick={handleUploadVideos}
+              disabled={uploading}
+              className="w-full"
+              variant="outline"
+            >
+              <Upload className="h-4 w-4 mr-2" />
+              {uploading ? "Upload en cours…" : "📤 Uploader toutes les vidéos vers Supabase"}
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
