@@ -166,6 +166,47 @@ const AdminDashboard = () => {
     setSaving(false);
   };
 
+  const handleUploadVideos = async () => {
+    setUploading(true);
+    setUploadStatus("Démarrage…");
+    let uploaded = 0;
+
+    for (const file of ALL_VIDEO_FILES) {
+      setUploadStatus(`Upload ${file.name}… (${uploaded + 1}/${ALL_VIDEO_FILES.length})`);
+      try {
+        const response = await fetch(file.localPath);
+        if (!response.ok) {
+          setUploadStatus(`❌ Fichier introuvable: ${file.localPath}`);
+          continue;
+        }
+        const blob = await response.blob();
+
+        const { error } = await supabase.storage
+          .from("videos")
+          .upload(file.name, blob, {
+            cacheControl: "31536000",
+            upsert: true,
+            contentType: file.name.endsWith(".webm") ? "video/webm" : "video/mp4",
+          });
+
+        if (error) {
+          toast({ title: "Erreur", description: `${file.name}: ${error.message}`, variant: "destructive" });
+        } else {
+          uploaded++;
+        }
+      } catch (e: any) {
+        toast({ title: "Erreur", description: `${file.name}: ${e.message}`, variant: "destructive" });
+      }
+    }
+
+    setUploadStatus(`✅ ${uploaded}/${ALL_VIDEO_FILES.length} vidéos uploadées avec succès.`);
+    setUploading(false);
+    toast({
+      title: "✅ Upload terminé",
+      description: `${uploaded} vidéos uploadées vers Supabase Storage.`,
+    });
+  };
+
   const handleLogout = async () => {
     await supabase.auth.signOut();
     navigate("/admin/login");
