@@ -7,7 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
-import { LogOut, Save, BarChart3, Target, Music, Share2, CheckCircle2 } from "lucide-react";
+import { LogOut, Save, BarChart3, Target, Music, Share2, CheckCircle2, Upload, Video } from "lucide-react";
+import { ALL_VIDEO_FILES } from "@/lib/platform";
 
 type TrackingRow = {
   id: string;
@@ -50,6 +51,8 @@ const AdminDashboard = () => {
   const [saving, setSaving] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
   const [savedRows, setSavedRows] = useState<TrackingRow[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState<string>("");
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -163,6 +166,47 @@ const AdminDashboard = () => {
     setSaving(false);
   };
 
+  const handleUploadVideos = async () => {
+    setUploading(true);
+    setUploadStatus("Démarrage…");
+    let uploaded = 0;
+
+    for (const file of ALL_VIDEO_FILES) {
+      setUploadStatus(`Upload ${file.name}… (${uploaded + 1}/${ALL_VIDEO_FILES.length})`);
+      try {
+        const response = await fetch(file.localPath);
+        if (!response.ok) {
+          setUploadStatus(`❌ Fichier introuvable: ${file.localPath}`);
+          continue;
+        }
+        const blob = await response.blob();
+
+        const { error } = await supabase.storage
+          .from("videos")
+          .upload(file.name, blob, {
+            cacheControl: "31536000",
+            upsert: true,
+            contentType: file.name.endsWith(".webm") ? "video/webm" : "video/mp4",
+          });
+
+        if (error) {
+          toast({ title: "Erreur", description: `${file.name}: ${error.message}`, variant: "destructive" });
+        } else {
+          uploaded++;
+        }
+      } catch (e: any) {
+        toast({ title: "Erreur", description: `${file.name}: ${e.message}`, variant: "destructive" });
+      }
+    }
+
+    setUploadStatus(`✅ ${uploaded}/${ALL_VIDEO_FILES.length} vidéos uploadées avec succès.`);
+    setUploading(false);
+    toast({
+      title: "✅ Upload terminé",
+      description: `${uploaded} vidéos uploadées vers Supabase Storage.`,
+    });
+  };
+
   const handleLogout = async () => {
     await supabase.auth.signOut();
     navigate("/admin/login");
@@ -262,6 +306,40 @@ const AdminDashboard = () => {
             Vous avez des modifications non sauvegardées. Cliquez sur le bouton ci-dessus pour les enregistrer.
           </p>
         )}
+
+        {/* Video Upload Section */}
+        <Card className="border-border/50">
+          <CardHeader className="pb-3">
+            <div className="flex items-center gap-3">
+              <Video className="h-5 w-5 text-primary" />
+              <div>
+                <CardTitle className="text-lg font-display">Vidéos de fond</CardTitle>
+                <CardDescription className="text-xs">
+                  Uploader les 6 vidéos (3 WebM + 3 MP4) vers Supabase Storage pour un chargement ultra-rapide.
+                </CardDescription>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="text-xs text-muted-foreground space-y-1">
+              {ALL_VIDEO_FILES.map((f) => (
+                <p key={f.name}>📁 {f.name}</p>
+              ))}
+            </div>
+            {uploadStatus && (
+              <p className="text-xs text-muted-foreground">{uploadStatus}</p>
+            )}
+            <Button
+              onClick={handleUploadVideos}
+              disabled={uploading}
+              className="w-full"
+              variant="outline"
+            >
+              <Upload className="h-4 w-4 mr-2" />
+              {uploading ? "Upload en cours…" : "📤 Uploader toutes les vidéos vers Supabase"}
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
