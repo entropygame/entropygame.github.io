@@ -51,6 +51,8 @@ const AdminDashboard = () => {
   const [saving, setSaving] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
   const [savedRows, setSavedRows] = useState<TrackingRow[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState<string>("");
 
   useEffect(() => {
     const checkAuth = async () => {
