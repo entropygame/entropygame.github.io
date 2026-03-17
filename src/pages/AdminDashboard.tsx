@@ -7,7 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
-import { LogOut, Save, BarChart3, Target, Music, Share2, CheckCircle2 } from "lucide-react";
+import { LogOut, Save, BarChart3, Target, Music, Share2, CheckCircle2, Upload, Video } from "lucide-react";
+import { ALL_VIDEO_FILES } from "@/lib/platform";
 
 type TrackingRow = {
   id: string;

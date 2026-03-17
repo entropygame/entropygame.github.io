@@ -1,6 +1,6 @@
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { detectLanguage, t } from "@/lib/i18n";
-import { isWindowsDesktop, getSessionVideo } from "@/lib/platform";
+import { isWindowsDesktop, getSessionVideo, getSessionVideoLocal, type VideoSources } from "@/lib/platform";
 import logoEntropy from "@/assets/logo-entropy.png";
 import { Trophy, Star, Monitor } from "lucide-react";
 
@@ -9,8 +9,21 @@ const POSTER = "/images/poster-fallback.jpg";
 const Index = () => {
   const lang = useMemo(() => detectLanguage(), []);
   const strings = useMemo(() => t(lang), [lang]);
-  const videoSrc = useMemo(() => getSessionVideo(), []);
   const isWindows = useMemo(() => isWindowsDesktop(), []);
+
+  // Try Supabase URLs first, fallback to local if they fail
+  const supabaseSrc = useMemo(() => getSessionVideo(), []);
+  const localSrc = useMemo(() => getSessionVideoLocal(), []);
+  const [videoSrc, setVideoSrc] = useState<VideoSources>(supabaseSrc);
+  const [fallbackUsed, setFallbackUsed] = useState(false);
+
+  // If supabase video fails to load, use local
+  const handleVideoError = () => {
+    if (!fallbackUsed) {
+      setVideoSrc(localSrc);
+      setFallbackUsed(true);
+    }
+  };
 
   if (!isWindows) {
     return (
@@ -35,17 +48,19 @@ const Index = () => {
 
   return (
     <div className="fixed inset-0 overflow-hidden bg-background">
-      {/* Video background */}
+      {/* Video background — WebM primary, MP4 fallback */}
       <video
-        key={videoSrc}
+        key={videoSrc.webm}
         autoPlay
         muted
         loop
         playsInline
         poster={POSTER}
         className="absolute inset-0 w-full h-full object-cover"
+        onError={handleVideoError}
       >
-        <source src={videoSrc} type="video/mp4" />
+        <source src={videoSrc.webm} type="video/webm" />
+        <source src={videoSrc.mp4} type="video/mp4" />
       </video>
 
       {/* Cinematic overlays */}
