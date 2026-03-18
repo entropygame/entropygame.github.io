@@ -39,12 +39,8 @@ export function getSessionVideo(): VideoSources {
 // Fallback to local files if Supabase storage not yet populated
 export function getSessionVideoLocal(): VideoSources {
   const key = "entropy_video_idx";
-  let idx = sessionStorage.getItem(key);
-  if (idx === null) {
-    idx = String(Math.floor(Math.random() * VIDEO_NAMES.length));
-    sessionStorage.setItem(key, idx);
-  }
-  const name = VIDEO_NAMES[Number(idx)];
+  const idx = Number(localStorage.getItem(key) ?? 0);
+  const name = VIDEO_NAMES[idx];
   return {
     webm: localPath(name, "webm"),
     mp4: localPath(name, "mp4"),
