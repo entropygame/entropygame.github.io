@@ -1,72 +1,40 @@
-import { useEffect, useRef, useState } from "react";
 import { ASSETS } from "@/lib/assets";
 import type { Lang } from "@/lib/i18n";
 import { I18N } from "@/lib/i18n";
 
 interface Props {
   lang: Lang;
-  isFloating: boolean;
-  heroRect: { top: number; left: number; width: number; height: number } | null;
+  /** When true, render as fixed bottom-right. When false, render inline (in flow). */
+  floating?: boolean;
 }
 
 /**
- * Single CTA element that physically translates from hero anchor to bottom-right.
- * Uses fixed positioning + transform with cubic-bezier glide.
+ * CTA button. Two render modes:
+ *  - inline (default): sits in the normal document flow (e.g. inside the hero)
+ *  - floating: position: fixed bottom-right (used after hero leaves the viewport)
+ *
+ * No scroll-driven position updates → no scroll lag.
  */
-export function FloatingCTA({ lang, isFloating, heroRect }: Props) {
+export function FloatingCTA({ lang, floating = false }: Props) {
   const t = I18N[lang].hero;
-  const ref = useRef<HTMLAnchorElement>(null);
-  const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Floating target: bottom-right with margin (teleport, no glide)
-  const floatingStyle: React.CSSProperties = {
-    position: "fixed",
-    right: "28px",
-    bottom: "28px",
-    top: "auto",
-    left: "auto",
-  };
-
-  // Hero anchored: positioned over the hero anchor
-  const heroStyle: React.CSSProperties = heroRect
-    ? {
-        position: "fixed",
-        top: `${heroRect.top}px`,
-        left: `${heroRect.left + heroRect.width / 2}px`,
-        transform: "translateX(-50%)",
-      }
-    : {
-        position: "fixed",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-      };
-
-  const style = isFloating ? floatingStyle : heroStyle;
+  const fixedStyle: React.CSSProperties | undefined = floating
+    ? { position: "fixed", right: "28px", bottom: "28px" }
+    : undefined;
 
   return (
     <a
-      ref={ref}
       href={ASSETS.ctaLink}
       target="_blank"
       rel="noopener noreferrer"
       className="z-50 group inline-flex items-center justify-center"
-      style={{
-        ...style,
-        // No transition: instant teleport between hero and floating positions
-        willChange: "top, left, right, bottom",
-      }}
+      style={fixedStyle}
       aria-label={t.cta}
     >
       <span
         className="relative inline-flex items-center gap-3 px-9 py-4 rounded-full text-base font-bold text-white bg-gradient-cta shadow-cta overflow-hidden animate-cta-breathe uppercase"
         style={{ letterSpacing: "0.22em", fontFamily: "var(--font-display)" }}
       >
-        {/* shimmer (kept) */}
         <span
           className="absolute inset-0 opacity-70 pointer-events-none"
           style={{

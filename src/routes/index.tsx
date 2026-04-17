@@ -28,9 +28,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   const [lang, setLang] = useState<Lang>("en");
   const [allowed, setAllowed] = useState<boolean | null>(null);
-  const [isFloating, setIsFloating] = useState(false);
-  const [heroRect, setHeroRect] = useState<{ top: number; left: number; width: number; height: number } | null>(null);
-  const heroAnchorRef = useRef<HTMLDivElement | null>(null);
+  const [showFloating, setShowFloating] = useState(false);
 
   // Init lang + platform check (client-only)
   useEffect(() => {
@@ -38,36 +36,18 @@ function Index() {
     setAllowed(isWindowsDesktop());
   }, []);
 
-  // Track hero anchor position + scroll for CTA logic
+  // Toggle the bottom-right floating CTA only after the hero has scrolled out.
+  // Uses IntersectionObserver → no per-frame scroll work, no layout thrash.
   useEffect(() => {
     if (allowed !== true) return;
-
-    const updateAnchor = () => {
-      const el = document.getElementById("hero-cta-anchor");
-      if (el) {
-        heroAnchorRef.current = el as HTMLDivElement;
-        const r = el.getBoundingClientRect();
-        setHeroRect({ top: r.top, left: r.left, width: r.width, height: r.height });
-      }
-    };
-
-    const onScroll = () => {
-      const heroEl = document.getElementById("hero");
-      if (!heroEl) return;
-      const heroBottom = heroEl.getBoundingClientRect().bottom;
-      // Float when hero is mostly out of view
-      setIsFloating(heroBottom < 120);
-      updateAnchor();
-    };
-
-    updateAnchor();
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", updateAnchor);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", updateAnchor);
-    };
+    const heroEl = document.getElementById("hero");
+    if (!heroEl) return;
+    const io = new IntersectionObserver(
+      ([entry]) => setShowFloating(!entry.isIntersecting),
+      { rootMargin: "-80px 0px 0px 0px", threshold: 0 }
+    );
+    io.observe(heroEl);
+    return () => io.disconnect();
   }, [allowed]);
 
   if (allowed === null) {
@@ -100,7 +80,7 @@ function Index() {
         </footer>
       </div>
 
-      <FloatingCTA lang={lang} isFloating={isFloating} heroRect={heroRect} />
+      {showFloating && <FloatingCTA lang={lang} floating />}
     </div>
   );
 }
