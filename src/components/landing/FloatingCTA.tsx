@@ -63,8 +63,8 @@ export function FloatingCTA({ lang, isFloating, heroRect }: Props) {
       aria-label={t.cta}
     >
       <span
-        className="relative inline-flex items-center gap-3 px-9 py-4 rounded-full text-base font-semibold text-white bg-gradient-cta shadow-cta overflow-hidden animate-cta-breathe"
-        style={{ letterSpacing: "0.02em" }}
+        className="relative inline-flex items-center gap-3 px-9 py-4 rounded-full text-base font-bold text-white bg-gradient-cta shadow-cta overflow-hidden animate-cta-breathe uppercase"
+        style={{ letterSpacing: "0.22em", fontFamily: "var(--font-display)" }}
       >
         {/* shimmer (kept) */}
         <span
