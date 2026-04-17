@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { ASSETS } from "@/lib/assets";
 import type { Lang } from "@/lib/i18n";
 import { I18N } from "@/lib/i18n";
+import { FloatingCTA } from "./FloatingCTA";
 
 interface Props {
   lang: Lang;
@@ -85,11 +86,9 @@ export function HeroSection({ lang }: Props) {
           </p>
         </div>
 
-        {/* LOWER — CTA anchor */}
+        {/* LOWER — CTA inline */}
         <div className="flex-shrink-0 mb-8 md:mb-10">
-          <div id="hero-cta-anchor" className="inline-block">
-            <div className="h-[52px] w-[200px]" aria-hidden />
-          </div>
+          <FloatingCTA lang={lang} />
         </div>
 
         {/* BOTTOM — Proof row pinned to bottom edge of video */}
