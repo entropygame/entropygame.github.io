@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-export const Route = createFileRoute("/admin/login")({
+export const Route = createFileRoute("/admin-login")({
   component: AdminLoginPage,
   head: () => ({
     meta: [
