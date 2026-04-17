@@ -61,11 +61,6 @@ export function HeroSection({ lang }: Props) {
 
       {/* Content */}
       <div className="relative z-10 text-center px-6 max-w-4xl mx-auto animate-fade-up">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass text-[11px] tracking-[0.25em] uppercase text-primary/90 mb-5">
-          <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse-glow" />
-          {t.eyebrow}
-        </div>
-
         <picture>
           <source srcSet={ASSETS.logo.webp} type="image/webp" />
           <img
