@@ -39,8 +39,7 @@ export function GoSection({ lang }: Props) {
             href={ASSETS.ctaLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="absolute left-1/2 -translate-x-1/2 group transition-transform duration-300 hover:scale-105"
-            style={{ bottom: "8%" }}
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 group transition-transform duration-300 hover:scale-105"
             aria-label={t.cta}
           >
             <picture>
