@@ -22,15 +22,13 @@ export function FloatingCTA({ lang, isFloating, heroRect }: Props) {
     setMounted(true);
   }, []);
 
-  // Floating target: bottom-right with margin
+  // Floating target: bottom-right with margin (teleport, no glide)
   const floatingStyle: React.CSSProperties = {
     position: "fixed",
     right: "28px",
     bottom: "28px",
     top: "auto",
     left: "auto",
-    transform: "scale(0.82)",
-    transformOrigin: "bottom right",
   };
 
   // Hero anchored: positioned over the hero anchor
@@ -39,14 +37,13 @@ export function FloatingCTA({ lang, isFloating, heroRect }: Props) {
         position: "fixed",
         top: `${heroRect.top}px`,
         left: `${heroRect.left + heroRect.width / 2}px`,
-        transform: "translateX(-50%) scale(1)",
-        transformOrigin: "center center",
+        transform: "translateX(-50%)",
       }
     : {
         position: "fixed",
         top: "50%",
         left: "50%",
-        transform: "translate(-50%, -50%) scale(1)",
+        transform: "translate(-50%, -50%)",
       };
 
   const style = isFloating ? floatingStyle : heroStyle;
@@ -60,22 +57,21 @@ export function FloatingCTA({ lang, isFloating, heroRect }: Props) {
       className="z-50 group inline-flex items-center justify-center"
       style={{
         ...style,
-        transition: mounted
-          ? "top 900ms cubic-bezier(0.22,1,0.36,1), left 900ms cubic-bezier(0.22,1,0.36,1), right 900ms cubic-bezier(0.22,1,0.36,1), bottom 900ms cubic-bezier(0.22,1,0.36,1), transform 900ms cubic-bezier(0.22,1,0.36,1)"
-          : "none",
-        willChange: "top, left, right, bottom, transform",
+        // No transition: instant teleport between hero and floating positions
+        willChange: "top, left, right, bottom",
       }}
       aria-label={t.cta}
     >
       <span
-        className="relative inline-flex items-center gap-3 px-8 py-3.5 rounded-full text-sm font-semibold tracking-[0.2em] uppercase text-primary-foreground bg-gradient-cta shadow-cta animate-pulse-glow overflow-hidden"
+        className="relative inline-flex items-center gap-3 px-9 py-4 rounded-full text-base font-semibold text-white bg-gradient-cta shadow-cta overflow-hidden animate-cta-breathe"
+        style={{ letterSpacing: "0.02em" }}
       >
-        {/* shimmer */}
+        {/* shimmer (kept) */}
         <span
-          className="absolute inset-0 opacity-60"
+          className="absolute inset-0 opacity-70 pointer-events-none"
           style={{
             background:
-              "linear-gradient(110deg, transparent 30%, oklch(1 0 0 / 0.25) 50%, transparent 70%)",
+              "linear-gradient(110deg, transparent 30%, oklch(1 0 0 / 0.35) 50%, transparent 70%)",
             backgroundSize: "200% 100%",
             animation: "shimmer 3s linear infinite",
           }}
