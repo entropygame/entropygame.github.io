@@ -77,7 +77,10 @@ export function HeroSection({ lang }: Props) {
           />
         </picture>
 
-        <p className="text-base md:text-lg text-foreground/85 max-w-2xl mx-auto mb-7 leading-relaxed">
+        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gradient mb-3">
+          {t.title}
+        </h1>
+        <p className="text-sm md:text-base text-muted-foreground max-w-xl mx-auto mb-7">
           {t.sub}
         </p>
 
