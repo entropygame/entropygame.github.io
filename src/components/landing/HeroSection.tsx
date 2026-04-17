@@ -24,7 +24,7 @@ export function HeroSection({ lang }: Props) {
   return (
     <section
       id="hero"
-      className="relative w-full h-screen min-h-[640px] overflow-hidden flex items-start justify-center pt-16 md:pt-20 lg:pt-24"
+      className="relative w-full h-screen min-h-[640px] overflow-hidden"
     >
       {/* Fallback poster */}
       <picture className="absolute inset-0">
@@ -59,34 +59,41 @@ export function HeroSection({ lang }: Props) {
       {/* Subtle vignette glow */}
       <div className="absolute -inset-20 pointer-events-none opacity-50" style={{ background: "radial-gradient(circle at 20% 80%, oklch(0.55 0.22 285 / 0.18), transparent 50%), radial-gradient(circle at 80% 20%, oklch(0.72 0.2 245 / 0.15), transparent 55%)" }} />
 
-      {/* Content */}
-      <div className="relative z-10 text-center px-6 max-w-4xl mx-auto animate-fade-up">
-        <picture>
-          <source srcSet={ASSETS.logo.webp} type="image/webp" />
-          <img
-            src={ASSETS.logo.png}
-            alt={t.headline}
-            className="mx-auto h-24 md:h-32 lg:h-36 w-auto object-contain mb-4 drop-shadow-[0_0_30px_oklch(0.72_0.2_245/0.6)]"
-            width={400}
-            height={140}
-          />
-        </picture>
-
-        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gradient mb-3">
-          {t.title}
-        </h1>
-        <p className="text-sm md:text-base text-muted-foreground max-w-xl mx-auto mb-7">
-          {t.sub}
-        </p>
-
-        {/* Hero CTA — anchor used by floating logic */}
-        <div id="hero-cta-anchor" className="inline-block">
-          {/* The actual moving CTA is rendered globally; this is just a spacer of the same size to preserve layout */}
-          <div className="h-[52px] w-[200px]" aria-hidden />
+      {/* Content — distributed across the full hero (= video) bounds */}
+      <div className="relative z-10 h-full w-full flex flex-col items-center px-6 py-8 md:py-10 lg:py-12 animate-fade-up">
+        {/* TOP — Logo */}
+        <div className="flex-shrink-0">
+          <picture>
+            <source srcSet={ASSETS.logo.webp} type="image/webp" />
+            <img
+              src={ASSETS.logo.png}
+              alt={t.headline}
+              className="mx-auto h-24 md:h-32 lg:h-36 w-auto object-contain drop-shadow-[0_0_30px_oklch(0.72_0.2_245/0.6)]"
+              width={400}
+              height={140}
+            />
+          </picture>
         </div>
 
-        {/* Proof row */}
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[11px] tracking-[0.18em] uppercase text-foreground/70">
+        {/* CENTER — Title + subtitle */}
+        <div className="flex-1 flex flex-col items-center justify-center text-center max-w-4xl">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gradient mb-3">
+            {t.title}
+          </h1>
+          <p className="text-sm md:text-base text-muted-foreground max-w-xl mx-auto">
+            {t.sub}
+          </p>
+        </div>
+
+        {/* LOWER — CTA anchor */}
+        <div className="flex-shrink-0 mb-8 md:mb-10">
+          <div id="hero-cta-anchor" className="inline-block">
+            <div className="h-[52px] w-[200px]" aria-hidden />
+          </div>
+        </div>
+
+        {/* BOTTOM — Proof row pinned to bottom edge of video */}
+        <div className="flex-shrink-0 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[11px] tracking-[0.18em] uppercase text-foreground/70">
           <span className="flex items-center gap-2">
             <TrophyIcon /> {t.award1}
           </span>
@@ -102,7 +109,7 @@ export function HeroSection({ lang }: Props) {
       </div>
 
       {/* Bottom edge fade into next section */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-background pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-b from-transparent to-background pointer-events-none" />
     </section>
   );
 }
