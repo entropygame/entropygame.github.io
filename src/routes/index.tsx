@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { ASSETS } from "@/lib/assets";
 import { detectLang, isWindowsDesktop, type Lang } from "@/lib/i18n";
 import { HeroSection } from "@/components/landing/HeroSection";
