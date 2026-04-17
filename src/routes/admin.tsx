@@ -31,7 +31,7 @@ function AdminLayout() {
             Vous devez vous connecter pour accéder au panneau d'administration.
           </p>
           <Link
-            to="/admin/login"
+            to="/admin-login"
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
           >
             Se connecter
@@ -55,7 +55,7 @@ function AdminLayout() {
               variant="outline"
               onClick={async () => {
                 await signOut();
-                navigate({ to: "/admin/login" });
+                navigate({ to: "/admin-login" });
               }}
             >
               Se déconnecter
@@ -92,7 +92,7 @@ function AdminLayout() {
               size="sm"
               onClick={async () => {
                 await signOut();
-                navigate({ to: "/admin/login" });
+                navigate({ to: "/admin-login" });
               }}
             >
               <LogOut className="w-4 h-4 mr-2" /> Déconnexion
