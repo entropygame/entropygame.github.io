@@ -29,14 +29,21 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "Project Entropy : Conquer the Galaxy" },
+      { name: "description", content: "Project Entropy: A galactic RTS + RPG. 
+Command fleets, recruit alien heroes, and fight for rare resources. Free on Windows PC." },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "Project Entropy : Conquer the Galaxy" },
+      { property: "og:description", content: "Project Entropy: A galactic RTS + RPG. 
+Command fleets, recruit alien heroes, and fight for rare resources. Free on Windows PC." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Project Entropy : Conquer the Galaxy" },
+      { name: "twitter:description", content: "Project Entropy: A galactic RTS + RPG. 
+Command fleets, recruit alien heroes, and fight for rare resources. Free on Windows PC." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/sv96HyEvGTYFrV3Gj4p5pDXyfBs2/social-images/social-1776446198289-BackGround_Hero_Section.webp" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/sv96HyEvGTYFrV3Gj4p5pDXyfBs2/social-images/social-1776446198289-BackGround_Hero_Section.webp" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
