@@ -49,7 +49,8 @@ export const I18N: Record<Lang, Dict> = {
     hero: {
       eyebrow: "AAA — 2026 Launch",
       headline: "Project Entropy",
-      sub: "Step beyond the fracture. A spectral conflict where every choice rewrites reality.",
+      title: "Conquer the Unknown",
+      sub: "Command fleets. Recruit alien heroes. Fight for the galaxy's last resources.",
       cta: "Play Now",
       award1: "Grand Winner — Best Game 2026",
       award2: "Players' Choice Award",
