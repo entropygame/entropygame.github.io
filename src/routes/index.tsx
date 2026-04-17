@@ -8,8 +8,11 @@ import { OperatorsSection } from "@/components/landing/OperatorsSection";
 import { GoSection } from "@/components/landing/GoSection";
 import { FloatingCTA } from "@/components/landing/FloatingCTA";
 import { FallbackScreen } from "@/components/landing/FallbackScreen";
-import { I18N } from "@/lib/i18n";
+import { LanguageSwitcher } from "@/components/landing/LanguageSwitcher";
+import { I18N, SUPPORTED_LANGS } from "@/lib/i18n";
 import { initVisitTracking } from "@/lib/tracking";
+
+const LANG_STORAGE_KEY = "pe_lang";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -31,12 +34,30 @@ function Index() {
   const [allowed, setAllowed] = useState<boolean | null>(null);
   const [showFloating, setShowFloating] = useState(false);
 
-  // Init lang + platform check + visit tracking (client-only)
+  // Init lang (saved override → browser detection) + platform check + tracking
   useEffect(() => {
-    setLang(detectLang());
+    let initial: Lang | null = null;
+    try {
+      const saved = localStorage.getItem(LANG_STORAGE_KEY);
+      if (saved && SUPPORTED_LANGS.includes(saved as Lang)) initial = saved as Lang;
+    } catch {}
+    setLang(initial ?? detectLang());
     setAllowed(isWindowsDesktop());
     initVisitTracking();
   }, []);
+
+  const handleLangChange = (next: Lang) => {
+    setLang(next);
+    try {
+      localStorage.setItem(LANG_STORAGE_KEY, next);
+    } catch {}
+    if (typeof document !== "undefined") document.documentElement.lang = next;
+  };
+
+  // Keep <html lang> in sync
+  useEffect(() => {
+    if (typeof document !== "undefined") document.documentElement.lang = lang;
+  }, [lang]);
 
   // Toggle the bottom-right floating CTA only after the hero has scrolled out.
   // Uses IntersectionObserver → no per-frame scroll work, no layout thrash.
@@ -57,7 +78,12 @@ function Index() {
   }
 
   if (!allowed) {
-    return <FallbackScreen lang={lang} />;
+    return (
+      <>
+        <LanguageSwitcher lang={lang} onChange={handleLangChange} />
+        <FallbackScreen lang={lang} />
+      </>
+    );
   }
 
   const fixedBgStyle: React.CSSProperties = {
@@ -69,6 +95,7 @@ function Index() {
 
   return (
     <div className="relative bg-background text-foreground">
+      <LanguageSwitcher lang={lang} onChange={handleLangChange} />
       <HeroSection lang={lang} />
 
       {/* Sections 2-4 share the fixed background */}
