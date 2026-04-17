@@ -1,0 +1,132 @@
+import { useEffect, useRef, useState } from "react";
+import { ASSETS } from "@/lib/assets";
+import type { Lang } from "@/lib/i18n";
+import { I18N } from "@/lib/i18n";
+
+interface Props {
+  lang: Lang;
+}
+
+export function HeroSection({ lang }: Props) {
+  const t = I18N[lang].hero;
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoReady, setVideoReady] = useState(false);
+
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    const onCanPlay = () => setVideoReady(true);
+    v.addEventListener("loadeddata", onCanPlay);
+    v.play().catch(() => {});
+    return () => v.removeEventListener("loadeddata", onCanPlay);
+  }, []);
+
+  return (
+    <section
+      id="hero"
+      className="relative w-full h-screen min-h-[640px] overflow-hidden flex items-center justify-center"
+    >
+      {/* Fallback poster */}
+      <picture className="absolute inset-0">
+        <source srcSet={ASSETS.hero.webp} type="image/webp" />
+        <img
+          src={ASSETS.hero.png}
+          alt=""
+          className="w-full h-full object-cover object-center"
+          aria-hidden
+        />
+      </picture>
+
+      {/* Hero video — elegant cinematic framing */}
+      <video
+        ref={videoRef}
+        className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-700 ${videoReady ? "opacity-100" : "opacity-0"}`}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        poster={ASSETS.hero.webp}
+        style={{ objectPosition: "center 35%" }}
+      >
+        <source src={ASSETS.hero.video} type="video/webm" />
+      </video>
+
+      {/* Readability + brand overlays */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[oklch(0.05_0.03_265/0.55)] via-[oklch(0.05_0.03_265/0.35)] to-[oklch(0.05_0.03_265/0.85)]" />
+      <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 35%, transparent 30%, oklch(0.05 0.03 265 / 0.6) 90%)" }} />
+
+      {/* Subtle vignette glow */}
+      <div className="absolute -inset-20 pointer-events-none opacity-50" style={{ background: "radial-gradient(circle at 20% 80%, oklch(0.55 0.22 285 / 0.18), transparent 50%), radial-gradient(circle at 80% 20%, oklch(0.72 0.2 245 / 0.15), transparent 55%)" }} />
+
+      {/* Content */}
+      <div className="relative z-10 text-center px-6 max-w-4xl mx-auto animate-fade-up">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass text-[11px] tracking-[0.25em] uppercase text-primary/90 mb-5">
+          <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse-glow" />
+          {t.eyebrow}
+        </div>
+
+        <picture>
+          <source srcSet={ASSETS.logo.webp} type="image/webp" />
+          <img
+            src={ASSETS.logo.png}
+            alt={t.headline}
+            className="mx-auto h-24 md:h-32 lg:h-36 w-auto object-contain mb-4 drop-shadow-[0_0_30px_oklch(0.72_0.2_245/0.6)]"
+            width={400}
+            height={140}
+          />
+        </picture>
+
+        <p className="text-base md:text-lg text-foreground/85 max-w-2xl mx-auto mb-7 leading-relaxed">
+          {t.sub}
+        </p>
+
+        {/* Hero CTA — anchor used by floating logic */}
+        <div id="hero-cta-anchor" className="inline-block">
+          {/* The actual moving CTA is rendered globally; this is just a spacer of the same size to preserve layout */}
+          <div className="h-[52px] w-[200px]" aria-hidden />
+        </div>
+
+        {/* Proof row */}
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[11px] tracking-[0.18em] uppercase text-foreground/70">
+          <span className="flex items-center gap-2">
+            <TrophyIcon /> {t.award1}
+          </span>
+          <span className="opacity-30">•</span>
+          <span className="flex items-center gap-2">
+            <StarIcon /> {t.award2}
+          </span>
+          <span className="opacity-30">•</span>
+          <span className="flex items-center gap-2">
+            <WindowsIcon /> {t.platform}
+          </span>
+        </div>
+      </div>
+
+      {/* Bottom edge fade into next section */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-background pointer-events-none" />
+    </section>
+  );
+}
+
+function TrophyIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6m12 5h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22m10 0c0-1.76-.85-3.25-2.03-3.79-.5-.23-.97-.66-.97-1.21v-2.34M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+    </svg>
+  );
+}
+function StarIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18 22l-6-3.6L6 22l1.5-7.2L2 10l7.1-1.1z"/>
+    </svg>
+  );
+}
+function WindowsIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M3 5.5L11 4v8H3zM12 4l9-1.4V12h-9zM3 13h8v7L3 18.5zM12 13h9v8.4L12 20z"/>
+    </svg>
+  );
+}
