@@ -1,6 +1,8 @@
 import { ASSETS } from "@/lib/assets";
 import type { Lang } from "@/lib/i18n";
 import { I18N } from "@/lib/i18n";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
+import { trackButtonClick } from "@/lib/tracking";
 
 interface Props {
   lang: Lang;
@@ -8,6 +10,11 @@ interface Props {
 
 export function GoSection({ lang }: Props) {
   const t = I18N[lang].go;
+  const { data: settings } = useSiteSettings();
+  const goUrl =
+    settings?.go_cta_url && settings.go_cta_url !== "#"
+      ? settings.go_cta_url
+      : ASSETS.ctaLink;
 
   return (
     <section className="relative py-20 overflow-hidden">
@@ -36,9 +43,10 @@ export function GoSection({ lang }: Props) {
 
           {/* GO button — smaller, centered low so it doesn't cover heads */}
           <a
-            href={ASSETS.ctaLink}
+            href={goUrl}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => void trackButtonClick("go-cta")}
             className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 group transition-transform duration-300 hover:scale-105"
             aria-label={t.cta}
           >
