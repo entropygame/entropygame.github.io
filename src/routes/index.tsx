@@ -78,7 +78,12 @@ function Index() {
   }
 
   if (!allowed) {
-    return <FallbackScreen lang={lang} />;
+    return (
+      <>
+        <LanguageSwitcher lang={lang} onChange={handleLangChange} />
+        <FallbackScreen lang={lang} />
+      </>
+    );
   }
 
   const fixedBgStyle: React.CSSProperties = {
