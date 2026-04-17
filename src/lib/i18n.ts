@@ -27,6 +27,7 @@ type Dict = {
   hero: {
     eyebrow: string;
     headline: string;
+    title: string;
     sub: string;
     cta: string;
     award1: string;
