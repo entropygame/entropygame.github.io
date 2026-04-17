@@ -1,6 +1,8 @@
 import { ASSETS } from "@/lib/assets";
 import type { Lang } from "@/lib/i18n";
 import { I18N } from "@/lib/i18n";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
+import { trackButtonClick } from "@/lib/tracking";
 
 interface Props {
   lang: Lang;
@@ -10,13 +12,24 @@ interface Props {
 
 /**
  * CTA button. Two render modes:
- *  - inline (default): sits in the normal document flow (e.g. inside the hero)
- *  - floating: position: fixed bottom-right (used after hero leaves the viewport)
+ *  - inline (default): hero CTA, in document flow
+ *  - floating: position: fixed bottom-right (after hero leaves viewport)
  *
- * No scroll-driven position updates → no scroll lag.
+ * URL is fetched dynamically from site_settings (admin-editable).
+ * Falls back to ASSETS.ctaLink if settings not yet loaded.
  */
 export function FloatingCTA({ lang, floating = false }: Props) {
   const t = I18N[lang].hero;
+  const { data: settings } = useSiteSettings();
+
+  const buttonId = floating ? "floating-cta" : "hero-cta";
+  const url = floating
+    ? settings?.floating_cta_url && settings.floating_cta_url !== "#"
+      ? settings.floating_cta_url
+      : ASSETS.ctaLink
+    : settings?.hero_cta_url && settings.hero_cta_url !== "#"
+      ? settings.hero_cta_url
+      : ASSETS.ctaLink;
 
   const fixedStyle: React.CSSProperties | undefined = floating
     ? { position: "fixed", right: "28px", bottom: "28px" }
@@ -24,9 +37,10 @@ export function FloatingCTA({ lang, floating = false }: Props) {
 
   return (
     <a
-      href={ASSETS.ctaLink}
+      href={url}
       target="_blank"
       rel="noopener noreferrer"
+      onClick={() => void trackButtonClick(buttonId)}
       className="z-50 group inline-flex items-center justify-center"
       style={fixedStyle}
       aria-label={t.cta}

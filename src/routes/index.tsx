@@ -9,6 +9,7 @@ import { GoSection } from "@/components/landing/GoSection";
 import { FloatingCTA } from "@/components/landing/FloatingCTA";
 import { FallbackScreen } from "@/components/landing/FallbackScreen";
 import { I18N } from "@/lib/i18n";
+import { initVisitTracking } from "@/lib/tracking";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -30,10 +31,11 @@ function Index() {
   const [allowed, setAllowed] = useState<boolean | null>(null);
   const [showFloating, setShowFloating] = useState(false);
 
-  // Init lang + platform check (client-only)
+  // Init lang + platform check + visit tracking (client-only)
   useEffect(() => {
     setLang(detectLang());
     setAllowed(isWindowsDesktop());
+    initVisitTracking();
   }, []);
 
   // Toggle the bottom-right floating CTA only after the hero has scrolled out.
