@@ -14,16 +14,147 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      button_clicks: {
+        Row: {
+          button_id: string
+          created_at: string
+          id: string
+          page_path: string | null
+          referrer: string | null
+          session_id: string | null
+          utm_source: string | null
+        }
+        Insert: {
+          button_id: string
+          created_at?: string
+          id?: string
+          page_path?: string | null
+          referrer?: string | null
+          session_id?: string | null
+          utm_source?: string | null
+        }
+        Update: {
+          button_id?: string
+          created_at?: string
+          id?: string
+          page_path?: string | null
+          referrer?: string | null
+          session_id?: string | null
+          utm_source?: string | null
+        }
+        Relationships: []
+      }
+      site_settings: {
+        Row: {
+          floating_cta_url: string
+          ga_measurement_id: string | null
+          go_cta_url: string
+          hero_cta_url: string
+          id: string
+          meta_conversions_token: string | null
+          meta_pixel_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          floating_cta_url?: string
+          ga_measurement_id?: string | null
+          go_cta_url?: string
+          hero_cta_url?: string
+          id?: string
+          meta_conversions_token?: string | null
+          meta_pixel_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          floating_cta_url?: string
+          ga_measurement_id?: string | null
+          go_cta_url?: string
+          hero_cta_url?: string
+          id?: string
+          meta_conversions_token?: string | null
+          meta_pixel_id?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      visit_sessions: {
+        Row: {
+          duration_ms: number | null
+          ended_at: string | null
+          id: string
+          landing_path: string | null
+          referrer: string | null
+          session_id: string
+          started_at: string
+          user_agent: string | null
+          utm_campaign: string | null
+          utm_medium: string | null
+          utm_source: string | null
+        }
+        Insert: {
+          duration_ms?: number | null
+          ended_at?: string | null
+          id?: string
+          landing_path?: string | null
+          referrer?: string | null
+          session_id: string
+          started_at?: string
+          user_agent?: string | null
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+        }
+        Update: {
+          duration_ms?: number | null
+          ended_at?: string | null
+          id?: string
+          landing_path?: string | null
+          referrer?: string | null
+          session_id?: string
+          started_at?: string
+          user_agent?: string | null
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "moderator" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +281,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "moderator", "user"],
+    },
   },
 } as const
