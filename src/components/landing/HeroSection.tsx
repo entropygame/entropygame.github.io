@@ -24,7 +24,7 @@ export function HeroSection({ lang }: Props) {
   return (
     <section
       id="hero"
-      className="relative w-full h-screen min-h-[640px] overflow-hidden flex items-center justify-center"
+      className="relative w-full h-screen min-h-[640px] overflow-hidden flex items-start justify-center pt-16 md:pt-20 lg:pt-24"
     >
       {/* Fallback poster */}
       <picture className="absolute inset-0">
