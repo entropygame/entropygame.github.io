@@ -69,7 +69,8 @@ export const I18N: Record<Lang, Dict> = {
     hero: {
       eyebrow: "AAA — Start 2026",
       headline: "Project Entropy",
-      sub: "Tritt jenseits des Bruchs. Ein spektraler Konflikt, in dem jede Wahl die Realität neu schreibt.",
+      title: "Erobere das Unbekannte",
+      sub: "Befehlige Flotten. Rekrutiere außerirdische Helden. Kämpfe um die letzten Ressourcen der Galaxie.",
       cta: "Jetzt Spielen",
       award1: "Hauptgewinner — Bestes Spiel 2026",
       award2: "Players' Choice Award",
@@ -88,7 +89,8 @@ export const I18N: Record<Lang, Dict> = {
     hero: {
       eyebrow: "AAA — Релиз 2026",
       headline: "Project Entropy",
-      sub: "Шагните за грань разлома. Спектральный конфликт, где каждый выбор переписывает реальность.",
+      title: "Покорите неизведанное",
+      sub: "Командуйте флотами. Вербуйте инопланетных героев. Сражайтесь за последние ресурсы галактики.",
       cta: "Играть",
       award1: "Гран-при — Лучшая игра 2026",
       award2: "Выбор игроков",
@@ -107,7 +109,8 @@ export const I18N: Record<Lang, Dict> = {
     hero: {
       eyebrow: "AAA — Sortie 2026",
       headline: "Project Entropy",
-      sub: "Franchissez la fracture. Un conflit spectral où chaque choix réécrit la réalité.",
+      title: "Conquérir l'Inconnu",
+      sub: "Commandez des flottes. Recrutez des héros aliens. Combattez pour les dernières ressources de la galaxie.",
       cta: "Jouer Maintenant",
       award1: "Grand Gagnant — Meilleur Jeu 2026",
       award2: "Prix du Choix des Joueurs",
@@ -126,7 +129,8 @@ export const I18N: Record<Lang, Dict> = {
     hero: {
       eyebrow: "AAA — Lanzamiento 2026",
       headline: "Project Entropy",
-      sub: "Cruza la fractura. Un conflicto espectral donde cada elección reescribe la realidad.",
+      title: "Conquista lo Desconocido",
+      sub: "Comanda flotas. Recluta héroes alienígenas. Lucha por los últimos recursos de la galaxia.",
       cta: "Jugar Ahora",
       award1: "Gran Ganador — Mejor Juego 2026",
       award2: "Premio de los Jugadores",
