@@ -143,7 +143,7 @@ export function CarouselSection({ lang }: Props) {
                     <source src={s.mp4} type="video/mp4" />
                   </video>
                   {!isCenter && (
-                    <div className="absolute inset-0 bg-background/40 backdrop-blur-[1px]" />
+                    <div className="absolute inset-0 bg-background/40" />
                   )}
                   <div className="absolute inset-0 ring-inset ring-1 ring-primary/10 rounded-2xl pointer-events-none" />
                   <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background/80 to-transparent" />
