@@ -1,15 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LinksTab } from "@/components/admin/LinksTab";
 import { TrackingTab } from "@/components/admin/TrackingTab";
 import { AnalyticsTab } from "@/components/admin/AnalyticsTab";
 import { Card, CardContent } from "@/components/ui/card";
 
-export const Route = createFileRoute("/admin/")({
-  component: AdminDashboard,
-});
-
-function AdminDashboard() {
+export default function AdminDashboard() {
   return (
     <Tabs defaultValue="texts" className="w-full">
       <TabsList className="grid w-full grid-cols-4">
@@ -25,8 +20,7 @@ function AdminDashboard() {
             <h2 className="text-lg font-semibold mb-2">Modifier les textes</h2>
             <p className="text-sm text-muted-foreground">
               Cet onglet est réservé pour l'édition future des textes du site. Pour l'instant,
-              seuls les liens des boutons CTA sont modifiables (onglet 2). Si vous voulez activer
-              l'édition des textes, demandez-le.
+              seuls les liens des boutons CTA sont modifiables (onglet 2).
             </p>
           </CardContent>
         </Card>

@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ASSETS } from "@/lib/assets";
 import { detectLang, isWindowsDesktop, type Lang } from "@/lib/i18n";
@@ -14,27 +13,11 @@ import { initVisitTracking } from "@/lib/tracking";
 
 const LANG_STORAGE_KEY = "pe_lang";
 
-export const Route = createFileRoute("/")({
-  component: Index,
-  head: () => ({
-    meta: [
-      { title: "Project Entropy — AAA Launch 2026" },
-      { name: "description", content: "Step beyond the fracture. A spectral conflict where every choice rewrites reality. Windows desktop only." },
-      { property: "og:title", content: "Project Entropy — AAA Launch 2026" },
-      { property: "og:description", content: "Step beyond the fracture. A spectral conflict where every choice rewrites reality." },
-      { property: "og:image", content: ASSETS.hero.webp },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: ASSETS.hero.webp },
-    ],
-  }),
-});
-
-function Index() {
+export default function LandingPage() {
   const [lang, setLang] = useState<Lang>("en");
   const [allowed, setAllowed] = useState<boolean | null>(null);
   const [showFloating, setShowFloating] = useState(false);
 
-  // Init lang (saved override → browser detection) + platform check + tracking
   useEffect(() => {
     let initial: Lang | null = null;
     try {
@@ -54,13 +37,10 @@ function Index() {
     if (typeof document !== "undefined") document.documentElement.lang = next;
   };
 
-  // Keep <html lang> in sync
   useEffect(() => {
     if (typeof document !== "undefined") document.documentElement.lang = lang;
   }, [lang]);
 
-  // Toggle the bottom-right floating CTA only after the hero has scrolled out.
-  // Uses IntersectionObserver → no per-frame scroll work, no layout thrash.
   useEffect(() => {
     if (allowed !== true) return;
     const heroEl = document.getElementById("hero");
@@ -98,7 +78,6 @@ function Index() {
       <LanguageSwitcher lang={lang} onChange={handleLangChange} />
       <HeroSection lang={lang} />
 
-      {/* Sections 2-4 share the fixed background */}
       <div style={fixedBgStyle} className="relative">
         <CarouselSection lang={lang} />
         <OperatorsSection lang={lang} />

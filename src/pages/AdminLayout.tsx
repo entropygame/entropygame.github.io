@@ -1,18 +1,16 @@
-import { createFileRoute, Outlet, Link, useNavigate } from "@tanstack/react-router";
+import { Outlet, Link, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { LogOut, Home } from "lucide-react";
 
-export const Route = createFileRoute("/admin")({
-  component: AdminLayout,
-  head: () => ({
-    meta: [{ title: "Admin — Project Entropy" }, { name: "robots", content: "noindex, nofollow" }],
-  }),
-});
-
-function AdminLayout() {
+export default function AdminLayout() {
   const { user, isAdmin, loading, signOut } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    document.title = "Admin — Project Entropy";
+  }, []);
 
   if (loading) {
     return (
@@ -55,7 +53,7 @@ function AdminLayout() {
               variant="outline"
               onClick={async () => {
                 await signOut();
-                navigate({ to: "/admin-login" });
+                navigate("/admin-login");
               }}
             >
               Se déconnecter
@@ -92,7 +90,7 @@ function AdminLayout() {
               size="sm"
               onClick={async () => {
                 await signOut();
-                navigate({ to: "/admin-login" });
+                navigate("/admin-login");
               }}
             >
               <LogOut className="w-4 h-4 mr-2" /> Déconnexion

@@ -1,22 +1,12 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-export const Route = createFileRoute("/admin-login")({
-  component: AdminLoginPage,
-  head: () => ({
-    meta: [
-      { title: "Connexion Admin — Project Entropy" },
-      { name: "robots", content: "noindex, nofollow" },
-    ],
-  }),
-});
-
-function AdminLoginPage() {
+export default function AdminLoginPage() {
   const { signIn, signUp, user, loading } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -26,8 +16,12 @@ function AdminLoginPage() {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
+    document.title = "Connexion Admin — Project Entropy";
+  }, []);
+
+  useEffect(() => {
     if (!loading && user) {
-      navigate({ to: "/admin" });
+      navigate("/admin");
     }
   }, [user, loading, navigate]);
 
@@ -38,7 +32,7 @@ function AdminLoginPage() {
     const { error } = await signIn(email, password);
     setSubmitting(false);
     if (error) setError(error);
-    else navigate({ to: "/admin" });
+    else navigate("/admin");
   };
 
   const handleSignUp = async (e: React.FormEvent) => {
@@ -73,24 +67,11 @@ function AdminLoginPage() {
             <form onSubmit={handleSignIn} className="space-y-4 mt-4">
               <div>
                 <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
+                <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
               </div>
               <div>
                 <Label htmlFor="password">Mot de passe</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  minLength={6}
-                />
+                <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} />
               </div>
               {error && <p className="text-sm text-destructive">{error}</p>}
               <Button type="submit" className="w-full" disabled={submitting}>
@@ -103,24 +84,11 @@ function AdminLoginPage() {
             <form onSubmit={handleSignUp} className="space-y-4 mt-4">
               <div>
                 <Label htmlFor="email-up">Email</Label>
-                <Input
-                  id="email-up"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
+                <Input id="email-up" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
               </div>
               <div>
                 <Label htmlFor="password-up">Mot de passe</Label>
-                <Input
-                  id="password-up"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  minLength={6}
-                />
+                <Input id="password-up" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} />
               </div>
               {error && <p className="text-sm text-destructive">{error}</p>}
               {info && <p className="text-sm text-primary">{info}</p>}
@@ -128,8 +96,7 @@ function AdminLoginPage() {
                 {submitting ? "Création…" : "Créer le compte"}
               </Button>
               <p className="text-xs text-muted-foreground">
-                Après création, demandez à un admin existant d'ajouter votre rôle dans la table{" "}
-                <code>user_roles</code>.
+                Après création, demandez à un admin existant d'ajouter votre rôle dans la table <code>user_roles</code>.
               </p>
             </form>
           </TabsContent>
