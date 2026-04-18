@@ -2,18 +2,25 @@ export type Lang = "en" | "zh" | "ru" | "de" | "fr" | "es" | "th" | "id" | "vi" 
 
 export const SUPPORTED_LANGS: Lang[] = ["en", "zh", "ru", "de", "fr", "es", "th", "id", "vi", "pt"];
 
-export const LANG_META: Record<Lang, { label: string; native: string; flag: string }> = {
-  en: { label: "English", native: "English", flag: "🇬🇧" },
-  zh: { label: "Chinese", native: "简体中文", flag: "🇨🇳" },
-  ru: { label: "Russian", native: "Русский", flag: "🇷🇺" },
-  de: { label: "German", native: "Deutsch", flag: "🇩🇪" },
-  fr: { label: "French", native: "Français", flag: "🇫🇷" },
-  es: { label: "Spanish", native: "Español", flag: "🇪🇸" },
-  th: { label: "Thai", native: "ไทย", flag: "🇹🇭" },
-  id: { label: "Indonesian", native: "Bahasa Indonesia", flag: "🇮🇩" },
-  vi: { label: "Vietnamese", native: "Tiếng Việt", flag: "🇻🇳" },
-  pt: { label: "Portuguese (Brazil)", native: "Português (BR)", flag: "🇧🇷" },
+// ISO 3166-1 alpha-2 country codes (lowercase) used to fetch flag SVGs from flagcdn.com.
+// We use SVG images instead of emoji because Windows lacks a color emoji font
+// for regional indicator sequences and renders flags as plain letter codes.
+export const LANG_META: Record<Lang, { label: string; native: string; country: string }> = {
+  en: { label: "English", native: "English", country: "gb" },
+  zh: { label: "Chinese", native: "简体中文", country: "cn" },
+  ru: { label: "Russian", native: "Русский", country: "ru" },
+  de: { label: "German", native: "Deutsch", country: "de" },
+  fr: { label: "French", native: "Français", country: "fr" },
+  es: { label: "Spanish", native: "Español", country: "es" },
+  th: { label: "Thai", native: "ไทย", country: "th" },
+  id: { label: "Indonesian", native: "Bahasa Indonesia", country: "id" },
+  vi: { label: "Vietnamese", native: "Tiếng Việt", country: "vn" },
+  pt: { label: "Portuguese (Brazil)", native: "Português (BR)", country: "br" },
 };
+
+export function flagUrl(country: string, width: 40 | 80 = 40): string {
+  return `https://flagcdn.com/w${width}/${country}.png`;
+}
 
 export function detectLang(): Lang {
   if (typeof navigator === "undefined") return "en";
