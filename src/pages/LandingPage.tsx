@@ -8,6 +8,7 @@ import { GoSection } from "@/components/landing/GoSection";
 import { FloatingCTA } from "@/components/landing/FloatingCTA";
 import { FallbackScreen } from "@/components/landing/FallbackScreen";
 import { LanguageSwitcher } from "@/components/landing/LanguageSwitcher";
+import { StarField } from "@/components/landing/StarField";
 import { I18N, SUPPORTED_LANGS } from "@/lib/i18n";
 import { initVisitTracking } from "@/lib/tracking";
 
@@ -80,14 +81,19 @@ export default function LandingPage() {
       <LanguageSwitcher lang={lang} onChange={handleLangChange} />
       <HeroSection lang={lang} />
 
-      <div style={fixedBgStyle} className="relative">
-        <CarouselSection lang={lang} />
-        <OperatorsSection lang={lang} />
-        <GoSection lang={lang} />
+      <div style={fixedBgStyle} className="relative isolate overflow-hidden">
+        {/* Galactic star field — sits above the fixed bg, below all content */}
+        <StarField className="z-0" />
 
-        <footer className="relative z-10 py-8 text-center text-[11px] tracking-[0.25em] uppercase text-muted-foreground/70">
-          {I18N[lang].footer}
-        </footer>
+        <div className="relative z-10">
+          <CarouselSection lang={lang} />
+          <OperatorsSection lang={lang} />
+          <GoSection lang={lang} />
+
+          <footer className="py-8 text-center text-[11px] tracking-[0.25em] uppercase text-muted-foreground/70">
+            {I18N[lang].footer}
+          </footer>
+        </div>
       </div>
 
       {showFloating && <FloatingCTA lang={lang} floating />}
