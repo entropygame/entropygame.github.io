@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Project Entropy</title>
+    <script>
+      // GitHub Pages SPA fallback:
+      // Redirect any deep-link 404 to "/" while preserving the original path
+      // in sessionStorage, then the SPA reads it back and replaces history.
+      (function () {
+        try {
+          sessionStorage.setItem(
+            "spa_redirect_path",
+            window.location.pathname + window.location.search + window.location.hash
+          );
+        } catch (e) {}
+        window.location.replace("/");
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>
