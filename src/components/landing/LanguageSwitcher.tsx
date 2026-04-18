@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { LANG_META, SUPPORTED_LANGS, type Lang } from "@/lib/i18n";
+import { LANG_META, SUPPORTED_LANGS, flagUrl, type Lang } from "@/lib/i18n";
 
 interface Props {
   lang: Lang;
@@ -41,7 +41,15 @@ export function LanguageSwitcher({ lang, onChange }: Props) {
         aria-label="Select language"
         aria-expanded={open}
       >
-        <span className="text-base leading-none">{current.flag}</span>
+        <img
+          src={flagUrl(current.country)}
+          alt=""
+          width={20}
+          height={15}
+          loading="lazy"
+          decoding="async"
+          className="w-5 h-[15px] object-cover rounded-sm shadow-[0_0_0_1px_rgba(0,0,0,0.2)]"
+        />
         <span className="text-[11px] tracking-[0.18em] uppercase text-foreground/90 font-semibold">
           {lang}
         </span>
@@ -83,7 +91,15 @@ export function LanguageSwitcher({ lang, onChange }: Props) {
                     : "text-foreground/80 hover:bg-primary/10 hover:text-foreground"
                 }`}
               >
-                <span className="text-lg leading-none">{meta.flag}</span>
+                <img
+                  src={flagUrl(meta.country)}
+                  alt=""
+                  width={24}
+                  height={18}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-6 h-[18px] object-cover rounded-sm shadow-[0_0_0_1px_rgba(0,0,0,0.2)]"
+                />
                 <span className="flex-1 text-sm font-medium">{meta.native}</span>
                 {active && (
                   <span className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_8px_oklch(0.72_0.2_245)]" />
