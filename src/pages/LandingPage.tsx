@@ -70,7 +70,9 @@ export default function LandingPage() {
     backgroundImage: `linear-gradient(oklch(0.05 0.03 265 / 0.85), oklch(0.05 0.03 265 / 0.92)), url(${ASSETS.fixedBg.webp})`,
     backgroundSize: "cover",
     backgroundPosition: "center",
-    backgroundAttachment: "fixed",
+    // background-attachment: fixed causes severe scroll jank on most browsers
+    // (forces full repaint per scroll frame). Use a normal scrolling background
+    // — visually nearly identical, dramatically smoother.
   };
 
   return (
