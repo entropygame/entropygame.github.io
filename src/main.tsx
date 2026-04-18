@@ -16,6 +16,15 @@ import NotFoundPage from "@/pages/NotFoundPage";
 
 const queryClient = new QueryClient();
 
+// Restore the original deep-link path that 404.html stashed (GitHub Pages SPA fallback).
+try {
+  const stashed = sessionStorage.getItem("spa_redirect_path");
+  if (stashed && stashed !== "/" && stashed !== window.location.pathname) {
+    sessionStorage.removeItem("spa_redirect_path");
+    window.history.replaceState(null, "", stashed);
+  }
+} catch {}
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
