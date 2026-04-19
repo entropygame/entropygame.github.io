@@ -82,7 +82,7 @@ export function HeroSection({ lang }: Props) {
             {t.title}
           </h1>
           <p
-            className="text-xs md:text-sm max-w-2xl mx-auto mt-2 uppercase text-foreground/85"
+            className="text-xs md:text-sm max-w-2xl mx-auto mt-2 uppercase text-foreground/85 whitespace-pre-line"
             style={{
               fontFamily: '"Michroma", "Orbitron", sans-serif',
               letterSpacing: "0.32em",
