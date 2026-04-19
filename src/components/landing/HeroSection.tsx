@@ -77,11 +77,11 @@ export function HeroSection({ lang }: Props) {
         </div>
 
         {/* CENTER — Title + subtitle */}
-        <div className="flex-1 flex flex-col items-center justify-center text-center max-w-4xl">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gradient mb-3">
+        <div className="flex-1 flex flex-col items-center justify-center text-center max-w-5xl">
+          <h1 className="title-3d-galaxy text-4xl md:text-6xl lg:text-7xl mb-5 px-2">
             {t.title}
           </h1>
-          <p className="text-sm md:text-base text-muted-foreground max-w-xl mx-auto">
+          <p className="text-sm md:text-base text-muted-foreground max-w-xl mx-auto mt-2">
             {t.sub}
           </p>
         </div>

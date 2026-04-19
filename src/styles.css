@@ -172,3 +172,36 @@
 .animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
 .animate-fade-up { animation: fade-up 0.8s var(--transition-glide) both; }
 .animate-cta-breathe { animation: cta-breathe 2.4s ease-in-out infinite; transform-origin: center center; }
+
+/* === 3D Galaxy Title — chrome/silver face with violet rim & deep extrusion === */
+.title-3d-galaxy {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background: linear-gradient(
+    180deg,
+    oklch(0.98 0.02 240) 0%,
+    oklch(0.92 0.04 250) 35%,
+    oklch(0.78 0.12 265) 55%,
+    oklch(0.88 0.08 280) 75%,
+    oklch(0.96 0.03 240) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-stroke: 1px oklch(0.35 0.12 280 / 0.7);
+  filter: drop-shadow(0 2px 0 oklch(0.4 0.18 285))
+          drop-shadow(0 4px 0 oklch(0.32 0.18 285))
+          drop-shadow(0 6px 0 oklch(0.24 0.16 285))
+          drop-shadow(0 8px 0 oklch(0.18 0.12 285))
+          drop-shadow(0 10px 14px oklch(0.05 0.05 270 / 0.8))
+          drop-shadow(0 0 28px oklch(0.55 0.22 285 / 0.55))
+          drop-shadow(0 0 50px oklch(0.72 0.2 245 / 0.35));
+  text-shadow:
+    0 0 1px oklch(0.95 0.05 240 / 0.9),
+    0 0 18px oklch(0.78 0.2 245 / 0.35);
+  transform: perspective(600px) rotateX(8deg);
+  transform-origin: center bottom;
+}
