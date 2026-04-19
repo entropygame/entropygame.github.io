@@ -81,7 +81,15 @@ export function HeroSection({ lang }: Props) {
           <h1 className="title-3d-galaxy text-4xl md:text-6xl lg:text-7xl mb-5 px-2">
             {t.title}
           </h1>
-          <p className="text-sm md:text-base text-muted-foreground max-w-xl mx-auto mt-2">
+          <p
+            className="text-xs md:text-sm max-w-2xl mx-auto mt-2 uppercase text-foreground/85"
+            style={{
+              fontFamily: '"Michroma", "Orbitron", sans-serif',
+              letterSpacing: "0.32em",
+              lineHeight: 1.7,
+              textShadow: "0 0 12px oklch(0.72 0.2 245 / 0.55), 0 0 28px oklch(0.55 0.22 285 / 0.35)",
+            }}
+          >
             {t.sub}
           </p>
         </div>
