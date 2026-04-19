@@ -155,7 +155,7 @@ export const I18N: Record<Lang, Dict> = {
       eyebrow: "AAA — Sortie 2026",
       headline: "Project Entropy",
       title: "Conquérir l'Inconnu",
-      sub: "Commandez des flottes. Recrutez des héros aliens. Combattez pour les dernières ressources de la galaxie.",
+      sub: "Commandez des flottes. \nRecrutez des héros aliens. \nCombattez pour les dernières ressources de la galaxie.",
       cta: "Jouer Maintenant",
       award1: "Grand Gagnant — Meilleur Jeu 2026",
       award2: "Prix du Choix des Joueurs",
