@@ -36,10 +36,10 @@ export function FloatingCTA({ lang, floating = false }: Props) {
     ? { position: "fixed", right: "28px", bottom: "28px" }
     : undefined;
 
-  // Slightly smaller in floating mode so it doesn't dominate the viewport
+  // Larger overall — inline CTA acts as the hero focal point
   const widthClass = floating
-    ? "w-[260px] md:w-[300px]"
-    : "w-[320px] md:w-[400px] lg:w-[460px]";
+    ? "w-[340px] md:w-[400px]"
+    : "w-[480px] md:w-[600px] lg:w-[700px]";
 
   return (
     <a
@@ -64,16 +64,15 @@ export function FloatingCTA({ lang, floating = false }: Props) {
           draggable={false}
         />
 
-        {/* Shimmer sweep over the central plate area */}
+        {/* Shimmer sweep — confined to the dark plate (measured: x≈23%→78%, y≈37%→58%) */}
         <span
           className="absolute pointer-events-none overflow-hidden"
           style={{
-            // Position over the dark central plate (between octagonal icon left & crystal right)
-            top: "38%",
-            bottom: "32%",
-            left: "27%",
-            right: "20%",
-            borderRadius: "4px",
+            top: "37%",
+            bottom: "42%",
+            left: "23%",
+            right: "22%",
+            borderRadius: "3px",
           }}
         >
           <span
@@ -88,32 +87,30 @@ export function FloatingCTA({ lang, floating = false }: Props) {
           />
         </span>
 
-        {/* Label — centered on the dark plate of the button.
-            The plate spans roughly 27% → 80% horizontally; we use auto-fit
-            with whitespace-nowrap + clamp so longer translations (DE/PT/RU)
-            shrink to fit instead of overflowing. */}
+        {/* Label — perfectly centered on the dark plate.
+            containerType makes cqw resolve to this box, so the font auto-fits
+            the plate width regardless of language length (DE/PT/RU). */}
         <span
           className="absolute flex items-center justify-center text-white font-bold uppercase pointer-events-none text-center"
           style={{
-            top: "32%",
-            bottom: "28%",
-            left: "27%",
-            right: "20%",
-            fontSize: floating
-              ? "clamp(0.55rem, 1.6cqw, 0.85rem)"
-              : "clamp(0.65rem, 2cqw, 1.05rem)",
-            letterSpacing: "0.18em",
-            fontFamily: "var(--font-display)",
-            whiteSpace: "nowrap",
-            textShadow:
-              "0 0 8px oklch(0.78 0.2 245 / 0.95), 0 0 20px oklch(0.6 0.24 260 / 0.75), 0 2px 4px oklch(0 0 0 / 0.85)",
+            top: "37%",
+            bottom: "42%",
+            left: "23%",
+            right: "22%",
             containerType: "inline-size",
           }}
         >
           <span
             style={{
-              // Fit to the plate width: scale font down via container query units
-              fontSize: "inherit",
+              fontSize: floating
+                ? "clamp(0.6rem, 9cqw, 1rem)"
+                : "clamp(0.8rem, 11cqw, 1.6rem)",
+              letterSpacing: "0.16em",
+              fontFamily: "var(--font-display)",
+              whiteSpace: "nowrap",
+              lineHeight: 1,
+              textShadow:
+                "0 0 8px oklch(0.78 0.2 245 / 0.95), 0 0 20px oklch(0.6 0.24 260 / 0.75), 0 2px 4px oklch(0 0 0 / 0.85)",
             }}
           >
             {t.cta}
