@@ -53,7 +53,7 @@ export function FloatingCTA({ lang, floating = false }: Props) {
     >
       <span
         className={`relative inline-block animate-cta-image-breathe ${widthClass}`}
-        style={{ aspectRatio: "1518 / 970" }}
+        style={{ aspectRatio: "1920 / 1010" }}
       >
         {/* Button artwork */}
         <img
@@ -68,42 +68,56 @@ export function FloatingCTA({ lang, floating = false }: Props) {
         <span
           className="absolute pointer-events-none overflow-hidden"
           style={{
-            // Position roughly over the dark central plate of the artwork
+            // Position over the dark central plate (between octagonal icon left & crystal right)
             top: "38%",
-            bottom: "30%",
-            left: "22%",
-            right: "18%",
-            borderRadius: "6px",
+            bottom: "32%",
+            left: "27%",
+            right: "20%",
+            borderRadius: "4px",
           }}
         >
           <span
-            className="absolute inset-0 opacity-80"
+            className="absolute inset-0 opacity-90"
             style={{
               background:
-                "linear-gradient(110deg, transparent 30%, oklch(1 0 0 / 0.45) 50%, transparent 70%)",
+                "linear-gradient(110deg, transparent 25%, oklch(1 0 0 / 0.55) 50%, transparent 75%)",
               backgroundSize: "200% 100%",
-              animation: "shimmer 3s linear infinite",
+              animation: "shimmer 2.6s linear infinite",
               mixBlendMode: "screen",
             }}
           />
         </span>
 
-        {/* Label — centered on the dark plate of the button */}
+        {/* Label — centered on the dark plate of the button.
+            The plate spans roughly 27% → 80% horizontally; we use auto-fit
+            with whitespace-nowrap + clamp so longer translations (DE/PT/RU)
+            shrink to fit instead of overflowing. */}
         <span
-          className="absolute inset-0 flex items-center justify-center text-white font-bold uppercase pointer-events-none"
+          className="absolute flex items-center justify-center text-white font-bold uppercase pointer-events-none text-center"
           style={{
-            // Shift right to clear the octagonal icon on the left, and slightly up to sit on the plate
-            paddingLeft: "14%",
-            paddingRight: "10%",
-            paddingBottom: "6%",
-            fontSize: floating ? "0.85rem" : "1rem",
-            letterSpacing: "0.22em",
+            top: "32%",
+            bottom: "28%",
+            left: "27%",
+            right: "20%",
+            fontSize: floating
+              ? "clamp(0.55rem, 1.6cqw, 0.85rem)"
+              : "clamp(0.65rem, 2cqw, 1.05rem)",
+            letterSpacing: "0.18em",
             fontFamily: "var(--font-display)",
+            whiteSpace: "nowrap",
             textShadow:
-              "0 0 8px oklch(0.78 0.2 245 / 0.9), 0 0 18px oklch(0.6 0.24 260 / 0.7), 0 2px 4px oklch(0 0 0 / 0.8)",
+              "0 0 8px oklch(0.78 0.2 245 / 0.95), 0 0 20px oklch(0.6 0.24 260 / 0.75), 0 2px 4px oklch(0 0 0 / 0.85)",
+            containerType: "inline-size",
           }}
         >
-          {t.cta}
+          <span
+            style={{
+              // Fit to the plate width: scale font down via container query units
+              fontSize: "inherit",
+            }}
+          >
+            {t.cta}
+          </span>
         </span>
       </span>
     </a>
