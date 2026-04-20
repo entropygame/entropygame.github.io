@@ -36,10 +36,10 @@ export function FloatingCTA({ lang, floating = false }: Props) {
     ? { position: "fixed", right: "28px", bottom: "28px" }
     : undefined;
 
-  // Larger overall — inline CTA acts as the hero focal point
+  // Compact sizing — fits within Hero layout without pushing content out
   const widthClass = floating
-    ? "w-[340px] md:w-[400px]"
-    : "w-[480px] md:w-[600px] lg:w-[700px]";
+    ? "w-[240px] md:w-[280px]"
+    : "w-[300px] md:w-[360px] lg:w-[400px]";
 
   return (
     <a
