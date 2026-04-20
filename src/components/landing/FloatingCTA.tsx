@@ -3,6 +3,7 @@ import type { Lang } from "@/lib/i18n";
 import { I18N } from "@/lib/i18n";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { trackButtonClick } from "@/lib/tracking";
+import ctaButtonImg from "@/assets/cta-button.png";
 
 interface Props {
   lang: Lang;
@@ -15,8 +16,8 @@ interface Props {
  *  - inline (default): hero CTA, in document flow
  *  - floating: position: fixed bottom-right (after hero leaves viewport)
  *
- * URL is fetched dynamically from site_settings (admin-editable).
- * Falls back to ASSETS.ctaLink if settings not yet loaded.
+ * Uses the custom sci-fi button image as background, with localized label
+ * rendered on top. Animation: zoom in/out + exaggerated drop-shadow glow.
  */
 export function FloatingCTA({ lang, floating = false }: Props) {
   const t = I18N[lang].hero;
@@ -35,6 +36,11 @@ export function FloatingCTA({ lang, floating = false }: Props) {
     ? { position: "fixed", right: "28px", bottom: "28px" }
     : undefined;
 
+  // Slightly smaller in floating mode so it doesn't dominate the viewport
+  const widthClass = floating
+    ? "w-[260px] md:w-[300px]"
+    : "w-[320px] md:w-[400px] lg:w-[460px]";
+
   return (
     <a
       href={url}
@@ -46,22 +52,59 @@ export function FloatingCTA({ lang, floating = false }: Props) {
       aria-label={t.cta}
     >
       <span
-        className="relative inline-flex items-center gap-3 px-9 py-4 rounded-full text-base font-bold text-white bg-gradient-cta shadow-cta overflow-hidden animate-cta-breathe uppercase"
-        style={{ letterSpacing: "0.22em", fontFamily: "var(--font-display)" }}
+        className={`relative inline-block animate-cta-image-breathe ${widthClass}`}
+        style={{ aspectRatio: "1518 / 970" }}
       >
-        <span
-          className="absolute inset-0 opacity-70 pointer-events-none"
-          style={{
-            background:
-              "linear-gradient(110deg, transparent 30%, oklch(1 0 0 / 0.35) 50%, transparent 70%)",
-            backgroundSize: "200% 100%",
-            animation: "shimmer 3s linear infinite",
-          }}
+        {/* Button artwork */}
+        <img
+          src={ctaButtonImg}
+          alt=""
+          aria-hidden
+          className="absolute inset-0 w-full h-full object-contain pointer-events-none select-none"
+          draggable={false}
         />
-        <span className="relative">{t.cta}</span>
-        <svg className="relative w-4 h-4 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-          <path d="M5 12h14M13 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
+
+        {/* Shimmer sweep over the central plate area */}
+        <span
+          className="absolute pointer-events-none overflow-hidden"
+          style={{
+            // Position roughly over the dark central plate of the artwork
+            top: "38%",
+            bottom: "30%",
+            left: "22%",
+            right: "18%",
+            borderRadius: "6px",
+          }}
+        >
+          <span
+            className="absolute inset-0 opacity-80"
+            style={{
+              background:
+                "linear-gradient(110deg, transparent 30%, oklch(1 0 0 / 0.45) 50%, transparent 70%)",
+              backgroundSize: "200% 100%",
+              animation: "shimmer 3s linear infinite",
+              mixBlendMode: "screen",
+            }}
+          />
+        </span>
+
+        {/* Label — centered on the dark plate of the button */}
+        <span
+          className="absolute inset-0 flex items-center justify-center text-white font-bold uppercase pointer-events-none"
+          style={{
+            // Shift right to clear the octagonal icon on the left, and slightly up to sit on the plate
+            paddingLeft: "14%",
+            paddingRight: "10%",
+            paddingBottom: "6%",
+            fontSize: floating ? "0.85rem" : "1rem",
+            letterSpacing: "0.22em",
+            fontFamily: "var(--font-display)",
+            textShadow:
+              "0 0 8px oklch(0.78 0.2 245 / 0.9), 0 0 18px oklch(0.6 0.24 260 / 0.7), 0 2px 4px oklch(0 0 0 / 0.8)",
+          }}
+        >
+          {t.cta}
+        </span>
       </span>
     </a>
   );
