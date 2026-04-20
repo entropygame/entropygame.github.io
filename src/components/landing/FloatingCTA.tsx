@@ -3,7 +3,6 @@ import type { Lang } from "@/lib/i18n";
 import { I18N } from "@/lib/i18n";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { trackButtonClick } from "@/lib/tracking";
-import ctaButtonImg from "@/assets/cta-button.png";
 
 interface Props {
   lang: Lang;
@@ -16,8 +15,8 @@ interface Props {
  *  - inline (default): hero CTA, in document flow
  *  - floating: position: fixed bottom-right (after hero leaves viewport)
  *
- * Uses the custom sci-fi button image as background, with localized label
- * rendered on top. Animation: zoom in/out + exaggerated drop-shadow glow.
+ * URL is fetched dynamically from site_settings (admin-editable).
+ * Falls back to ASSETS.ctaLink if settings not yet loaded.
  */
 export function FloatingCTA({ lang, floating = false }: Props) {
   const t = I18N[lang].hero;
@@ -36,11 +35,6 @@ export function FloatingCTA({ lang, floating = false }: Props) {
     ? { position: "fixed", right: "28px", bottom: "28px" }
     : undefined;
 
-  // Compact sizing — fits within Hero layout without pushing content out
-  const widthClass = floating
-    ? "w-[240px] md:w-[280px]"
-    : "w-[300px] md:w-[360px] lg:w-[400px]";
-
   return (
     <a
       href={url}
@@ -52,70 +46,22 @@ export function FloatingCTA({ lang, floating = false }: Props) {
       aria-label={t.cta}
     >
       <span
-        className={`relative inline-block animate-cta-image-breathe ${widthClass}`}
-        style={{ aspectRatio: "1920 / 1010" }}
+        className="relative inline-flex items-center gap-3 px-9 py-4 rounded-full text-base font-bold text-white bg-gradient-cta shadow-cta overflow-hidden animate-cta-breathe uppercase"
+        style={{ letterSpacing: "0.22em", fontFamily: "var(--font-display)" }}
       >
-        {/* Button artwork */}
-        <img
-          src={ctaButtonImg}
-          alt=""
-          aria-hidden
-          className="absolute inset-0 w-full h-full object-contain pointer-events-none select-none"
-          draggable={false}
+        <span
+          className="absolute inset-0 opacity-70 pointer-events-none"
+          style={{
+            background:
+              "linear-gradient(110deg, transparent 30%, oklch(1 0 0 / 0.35) 50%, transparent 70%)",
+            backgroundSize: "200% 100%",
+            animation: "shimmer 3s linear infinite",
+          }}
         />
-
-        {/* Shimmer sweep — confined to the dark plate (measured: x≈23%→78%, y≈37%→58%) */}
-        <span
-          className="absolute pointer-events-none overflow-hidden"
-          style={{
-            top: "37%",
-            bottom: "42%",
-            left: "23%",
-            right: "22%",
-            borderRadius: "3px",
-          }}
-        >
-          <span
-            className="absolute inset-0 opacity-90"
-            style={{
-              background:
-                "linear-gradient(110deg, transparent 25%, oklch(1 0 0 / 0.55) 50%, transparent 75%)",
-              backgroundSize: "200% 100%",
-              animation: "shimmer 2.6s linear infinite",
-              mixBlendMode: "screen",
-            }}
-          />
-        </span>
-
-        {/* Label — perfectly centered on the dark plate.
-            containerType makes cqw resolve to this box, so the font auto-fits
-            the plate width regardless of language length (DE/PT/RU). */}
-        <span
-          className="absolute flex items-center justify-center text-white font-bold uppercase pointer-events-none text-center"
-          style={{
-            top: "37%",
-            bottom: "42%",
-            left: "23%",
-            right: "22%",
-            containerType: "inline-size",
-          }}
-        >
-          <span
-            style={{
-              fontSize: floating
-                ? "clamp(0.6rem, 9cqw, 1rem)"
-                : "clamp(0.8rem, 11cqw, 1.6rem)",
-              letterSpacing: "0.16em",
-              fontFamily: "var(--font-display)",
-              whiteSpace: "nowrap",
-              lineHeight: 1,
-              textShadow:
-                "0 0 8px oklch(0.78 0.2 245 / 0.95), 0 0 20px oklch(0.6 0.24 260 / 0.75), 0 2px 4px oklch(0 0 0 / 0.85)",
-            }}
-          >
-            {t.cta}
-          </span>
-        </span>
+        <span className="relative">{t.cta}</span>
+        <svg className="relative w-4 h-4 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+          <path d="M5 12h14M13 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
       </span>
     </a>
   );
