@@ -1,8 +1,10 @@
+import { useEffect, useRef } from "react";
 import { ASSETS } from "@/lib/assets";
 import type { Lang } from "@/lib/i18n";
 import { I18N } from "@/lib/i18n";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { trackButtonClick } from "@/lib/tracking";
+import ctaClickSfx from "@/assets/cta-click.m4a";
 
 interface Props {
   lang: Lang;
@@ -15,6 +17,30 @@ export function GoSection({ lang }: Props) {
     settings?.go_cta_url && settings.go_cta_url !== "#"
       ? settings.go_cta_url
       : ASSETS.ctaLink;
+
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    const audio = new Audio(ctaClickSfx);
+    audio.preload = "auto";
+    audio.volume = 0.7;
+    audioRef.current = audio;
+    return () => {
+      audio.pause();
+      audioRef.current = null;
+    };
+  }, []);
+
+  const playHoverSound = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    try {
+      audio.currentTime = 0;
+      void audio.play();
+    } catch {
+      // ignore
+    }
+  };
 
   return (
     <section className="relative py-20 overflow-hidden">
