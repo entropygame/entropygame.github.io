@@ -197,12 +197,12 @@
           drop-shadow(0 6px 0 oklch(0.26 0.16 285))
           drop-shadow(0 8px 0 oklch(0.2 0.14 285))
           drop-shadow(0 10px 0 oklch(0.14 0.1 285))
-          drop-shadow(0 12px 16px oklch(0.05 0.05 270 / 0.85))
-          drop-shadow(0 0 30px oklch(0.55 0.22 285 / 0.6))
-          drop-shadow(0 0 55px oklch(0.72 0.2 245 / 0.4));
+          drop-shadow(0 12px 14px oklch(0.05 0.05 270 / 0.7))
+          drop-shadow(0 0 18px oklch(0.55 0.22 285 / 0.35))
+          drop-shadow(0 0 32px oklch(0.72 0.2 245 / 0.22));
   text-shadow:
     0 0 1px oklch(0.95 0.05 240 / 0.95),
-    0 0 20px oklch(0.78 0.2 245 / 0.4);
+    0 0 10px oklch(0.78 0.2 245 / 0.22);
   transform: perspective(700px) rotateX(6deg);
   transform-origin: center bottom;
 }
