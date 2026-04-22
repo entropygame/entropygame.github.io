@@ -1,9 +1,10 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { ASSETS } from "@/lib/assets";
 import type { Lang } from "@/lib/i18n";
 import { I18N } from "@/lib/i18n";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { trackButtonClick } from "@/lib/tracking";
+import { playSfx, registerSfx } from "@/lib/sfx";
 import ctaClickSfx from "@/assets/cta-click.m4a";
 
 interface Props {
