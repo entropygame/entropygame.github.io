@@ -1,9 +1,10 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { ASSETS } from "@/lib/assets";
 import type { Lang } from "@/lib/i18n";
 import { I18N } from "@/lib/i18n";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { trackButtonClick } from "@/lib/tracking";
+import { playSfx, registerSfx } from "@/lib/sfx";
 import ctaClickSfx from "@/assets/cta-click.m4a";
 
 interface Props {
@@ -23,28 +24,13 @@ interface Props {
 export function FloatingCTA({ lang, floating = false }: Props) {
   const t = I18N[lang].hero;
   const { data: settings } = useSiteSettings();
-  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    const audio = new Audio(ctaClickSfx);
-    audio.preload = "auto";
-    audio.volume = 0.7;
-    audioRef.current = audio;
-    return () => {
-      audio.pause();
-      audioRef.current = null;
-    };
+    registerSfx(ctaClickSfx, 0.7);
   }, []);
 
   const playHoverSound = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    try {
-      audio.currentTime = 0;
-      void audio.play();
-    } catch {
-      // ignore
-    }
+    playSfx(ctaClickSfx, 0.7);
   };
 
   const buttonId = floating ? "floating-cta" : "hero-cta";

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { ASSETS } from "@/lib/assets";
 import type { Lang } from "@/lib/i18n";
 import { I18N } from "@/lib/i18n";
+import { playSfx, registerSfx } from "@/lib/sfx";
 import hoverClickSfx from "@/assets/hover-click.mp3";
 
 interface Props {
@@ -42,28 +43,13 @@ function OperatorCard({
 }) {
   const [hovered, setHovered] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    const audio = new Audio(hoverClickSfx);
-    audio.preload = "auto";
-    audio.volume = 0.6;
-    audioRef.current = audio;
-    return () => {
-      audio.pause();
-      audioRef.current = null;
-    };
+    registerSfx(hoverClickSfx, 0.6);
   }, []);
 
   const playClickSound = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    try {
-      audio.currentTime = 0;
-      void audio.play();
-    } catch {
-      // ignore
-    }
+    playSfx(hoverClickSfx, 0.6);
   };
 
   const onEnter = () => {
