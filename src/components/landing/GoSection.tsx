@@ -72,6 +72,7 @@ export function GoSection({ lang }: Props) {
             href={goUrl}
             target="_blank"
             rel="noopener noreferrer"
+            onMouseEnter={playHoverSound}
             onClick={() => void trackButtonClick("go-cta")}
             className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 group transition-transform duration-300 hover:scale-105"
             aria-label={t.cta}
