@@ -19,28 +19,12 @@ export function GoSection({ lang }: Props) {
       ? settings.go_cta_url
       : ASSETS.ctaLink;
 
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-
   useEffect(() => {
-    const audio = new Audio(ctaClickSfx);
-    audio.preload = "auto";
-    audio.volume = 0.7;
-    audioRef.current = audio;
-    return () => {
-      audio.pause();
-      audioRef.current = null;
-    };
+    registerSfx(ctaClickSfx, 0.7);
   }, []);
 
   const playHoverSound = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    try {
-      audio.currentTime = 0;
-      void audio.play();
-    } catch {
-      // ignore
-    }
+    playSfx(ctaClickSfx, 0.7);
   };
 
   return (
