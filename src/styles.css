@@ -173,36 +173,35 @@
 .animate-fade-up { animation: fade-up 0.8s var(--transition-glide) both; }
 .animate-cta-breathe { animation: cta-breathe 2.4s ease-in-out infinite; transform-origin: center center; }
 
-/* === 3D Galaxy Title — solid, dominant, condensed black italic === */
+/* === Rocky Galactic Gaming Title — sharp, carved stone with cosmic edge === */
 .title-3d-galaxy {
   font-family: "Saira Condensed", "Orbitron", sans-serif;
   font-weight: 900;
   font-style: italic;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
-  background: linear-gradient(
-    180deg,
-    oklch(0.98 0.02 240) 0%,
-    oklch(0.94 0.04 245) 30%,
-    oklch(0.82 0.14 255) 55%,
-    oklch(0.9 0.08 270) 78%,
-    oklch(0.97 0.03 240) 100%
-  );
+  /* Rocky stone surface — dark mineral with cool galactic highlights */
+  background:
+    linear-gradient(
+      180deg,
+      oklch(0.78 0.04 250) 0%,
+      oklch(0.62 0.06 255) 25%,
+      oklch(0.38 0.05 265) 50%,
+      oklch(0.48 0.08 270) 75%,
+      oklch(0.7 0.05 250) 100%
+    );
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  -webkit-text-stroke: 1.5px oklch(0.3 0.12 280 / 0.85);
-  filter: drop-shadow(0 2px 0 oklch(0.42 0.18 285))
-          drop-shadow(0 4px 0 oklch(0.34 0.18 285))
-          drop-shadow(0 6px 0 oklch(0.26 0.16 285))
-          drop-shadow(0 8px 0 oklch(0.2 0.14 285))
-          drop-shadow(0 10px 0 oklch(0.14 0.1 285))
-          drop-shadow(0 12px 16px oklch(0.05 0.05 270 / 0.85))
-          drop-shadow(0 0 30px oklch(0.55 0.22 285 / 0.6))
-          drop-shadow(0 0 55px oklch(0.72 0.2 245 / 0.4));
-  text-shadow:
-    0 0 1px oklch(0.95 0.05 240 / 0.95),
-    0 0 20px oklch(0.78 0.2 245 / 0.4);
-  transform: perspective(700px) rotateX(6deg);
-  transform-origin: center bottom;
+  /* Crisp carved edge */
+  -webkit-text-stroke: 1px oklch(0.18 0.04 265);
+  /* Solid extruded rock depth — no blur, just hard layered shadows */
+  filter:
+    drop-shadow(1px 1px 0 oklch(0.22 0.04 265))
+    drop-shadow(2px 2px 0 oklch(0.2 0.04 265))
+    drop-shadow(3px 3px 0 oklch(0.18 0.04 265))
+    drop-shadow(4px 4px 0 oklch(0.16 0.04 265))
+    drop-shadow(5px 5px 0 oklch(0.14 0.04 265))
+    drop-shadow(6px 6px 0 oklch(0.12 0.04 265))
+    drop-shadow(0 8px 2px oklch(0.05 0.03 265 / 0.9));
 }
