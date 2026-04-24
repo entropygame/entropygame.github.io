@@ -4,22 +4,27 @@
  * Why this exists:
  *  - Browsers block `audio.play()` until the user has interacted with the page
  *    (autoplay policy). On `mouseenter` BEFORE any click, `play()` rejects.
- *  - On GitHub Pages (different origin / fresh tab), this is more strict than
- *    inside the Lovable preview iframe where the user has usually already
- *    clicked.
+ *  - On a fresh tab (e.g. published site opened in a new browser), the user
+ *    has not yet interacted, so the very first hover sound is blocked until
+ *    they click somewhere — or, on some systems, until they touch the volume
+ *    which forces the browser to re-evaluate the audio context.
  *
  * Strategy:
- *  - Pre-create one HTMLAudioElement per sound URL (cached).
- *  - On the first user gesture (pointerdown / keydown / touchstart), do a
- *    silent "unlock" play+pause on every cached audio so subsequent hover
- *    plays are allowed.
- *  - `playSfx(url)` clones playback by resetting currentTime; swallow any
- *    rejection so we never throw or log noisy errors.
+ *  - Pre-create one HTMLAudioElement per sound URL (cached). No crossOrigin
+ *    (assets are bundled same-origin; setting it can cause CORS-related play
+ *    failures on some hosts).
+ *  - On the FIRST real user gesture (click / pointerdown / keydown /
+ *    touchstart / pointerup), do a real "unlock": call `play()` then
+ *    immediately pause. We do NOT mute during unlock — muted unlock is
+ *    unreliable on Chrome/Safari. Volume is briefly lowered to 0.01 instead.
+ *  - Also resume a shared AudioContext as a belt-and-suspenders unlock signal.
+ *  - `playSfx(url)` resets currentTime and plays; rejections are swallowed.
  */
 
 const cache = new Map<string, HTMLAudioElement>();
 let unlocked = false;
 let unlockBound = false;
+let sharedCtx: AudioContext | null = null;
 
 function getAudio(url: string): HTMLAudioElement | null {
   if (typeof window === "undefined") return null;
@@ -27,18 +32,43 @@ function getAudio(url: string): HTMLAudioElement | null {
   if (!a) {
     a = new Audio(url);
     a.preload = "auto";
-    a.crossOrigin = "anonymous";
+    // Do NOT set crossOrigin — bundled assets are same-origin, and setting it
+    // can trigger spurious CORS failures on some CDNs/hosts.
     cache.set(url, a);
   }
   return a;
 }
 
+function ensureCtx(): AudioContext | null {
+  if (typeof window === "undefined") return null;
+  if (sharedCtx) return sharedCtx;
+  const Ctor =
+    (window as unknown as { AudioContext?: typeof AudioContext }).AudioContext ||
+    (window as unknown as { webkitAudioContext?: typeof AudioContext })
+      .webkitAudioContext;
+  if (!Ctor) return null;
+  try {
+    sharedCtx = new Ctor();
+  } catch {
+    sharedCtx = null;
+  }
+  return sharedCtx;
+}
+
 function unlockAll() {
   if (unlocked) return;
   unlocked = true;
+
+  // Resume the shared AudioContext (some browsers gate HTMLAudio on this).
+  const ctx = ensureCtx();
+  if (ctx && ctx.state === "suspended") {
+    ctx.resume().catch(() => {});
+  }
+
   cache.forEach((a) => {
     const prevVol = a.volume;
-    a.volume = 0;
+    // Use a near-silent (not fully muted) unlock: muted unlock is unreliable.
+    a.volume = 0.01;
     const p = a.play();
     if (p && typeof p.then === "function") {
       p.then(() => {
@@ -49,8 +79,12 @@ function unlockAll() {
         a.volume = prevVol;
       });
     } else {
-      a.pause();
-      a.currentTime = 0;
+      try {
+        a.pause();
+        a.currentTime = 0;
+      } catch {
+        /* ignore */
+      }
       a.volume = prevVol;
     }
   });
@@ -59,15 +93,24 @@ function unlockAll() {
 function bindUnlockOnce() {
   if (unlockBound || typeof window === "undefined") return;
   unlockBound = true;
+
+  const events: Array<keyof WindowEventMap> = [
+    "click",
+    "pointerdown",
+    "pointerup",
+    "keydown",
+    "touchstart",
+    "touchend",
+  ];
+
   const handler = () => {
     unlockAll();
-    window.removeEventListener("pointerdown", handler);
-    window.removeEventListener("keydown", handler);
-    window.removeEventListener("touchstart", handler);
+    events.forEach((ev) => window.removeEventListener(ev, handler));
   };
-  window.addEventListener("pointerdown", handler, { once: true });
-  window.addEventListener("keydown", handler, { once: true });
-  window.addEventListener("touchstart", handler, { once: true });
+
+  events.forEach((ev) =>
+    window.addEventListener(ev, handler, { passive: true }),
+  );
 }
 
 export function registerSfx(url: string, volume = 0.7): void {
@@ -86,7 +129,7 @@ export function playSfx(url: string, volume = 0.7): void {
     const p = a.play();
     if (p && typeof p.catch === "function") {
       p.catch(() => {
-        /* autoplay blocked — silently ignore */
+        /* autoplay blocked — silently ignore until first user gesture */
       });
     }
   } catch {
