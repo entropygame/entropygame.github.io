@@ -81,6 +81,29 @@ export function initVisitTracking() {
   window.addEventListener("beforeunload", onHide);
 }
 
+function readCookie(name: string): string | undefined {
+  if (typeof document === "undefined") return undefined;
+  const m = document.cookie.match(new RegExp("(?:^|; )" + name + "=([^;]*)"));
+  return m ? decodeURIComponent(m[1]) : undefined;
+}
+
+async function sendMetaConversion(buttonId: string, sessionId: string) {
+  try {
+    await supabase.functions.invoke("meta-conversion", {
+      body: {
+        eventName: "Lead",
+        eventId: `${buttonId}-${sessionId}-${Date.now()}`,
+        eventSourceUrl: typeof window !== "undefined" ? window.location.href : undefined,
+        userAgent: typeof navigator !== "undefined" ? navigator.userAgent : undefined,
+        fbp: readCookie("_fbp"),
+        fbc: readCookie("_fbc"),
+      },
+    });
+  } catch (e) {
+    console.warn("[tracking] meta conversion failed", e);
+  }
+}
+
 export async function trackButtonClick(buttonId: string) {
   try {
     const sessionId = getOrCreateSessionId();
@@ -92,6 +115,7 @@ export async function trackButtonClick(buttonId: string) {
       utm_source: utm.utm_source,
       page_path: typeof window !== "undefined" ? window.location.pathname : null,
     });
+    void sendMetaConversion(buttonId, sessionId);
   } catch (e) {
     console.warn("[tracking] click failed", e);
   }
