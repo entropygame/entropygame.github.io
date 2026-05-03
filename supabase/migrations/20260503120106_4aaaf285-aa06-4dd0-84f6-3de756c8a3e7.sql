@@ -1,0 +1,1 @@
+ALTER TABLE public.site_settings DROP COLUMN IF EXISTS meta_conversions_token;
