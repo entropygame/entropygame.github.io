@@ -43,10 +43,12 @@ function OperatorCard({
   index,
   op,
   hoverLabel,
+  url,
 }: {
   index: number;
   op: { webp: string; png: string; webm: string };
   hoverLabel: string;
+  url: string;
 }) {
   const [hovered, setHovered] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -78,11 +80,16 @@ function OperatorCard({
   };
 
   return (
-    <div
-      className="relative aspect-[3/4] cursor-pointer group"
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={() => void trackButtonClick(`operator-card-${index + 1}`)}
+      className="relative aspect-[3/4] cursor-pointer group block"
       style={{ perspective: "1500px" }}
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
+      aria-label={`Operator ${index + 1}`}
     >
       <div
         className="relative w-full h-full transition-transform duration-700"
