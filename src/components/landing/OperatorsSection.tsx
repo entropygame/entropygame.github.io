@@ -159,6 +159,6 @@ function OperatorCard({
           <div className="absolute inset-0 ring-inset ring-1 ring-primary/30 rounded-2xl pointer-events-none" />
         </div>
       </div>
-    </div>
+    </a>
   );
 }
