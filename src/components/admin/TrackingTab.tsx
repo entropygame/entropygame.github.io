@@ -73,9 +73,19 @@ export function TrackingTab() {
             Disponible dans Meta Events Manager.
           </p>
         </div>
-        <div className="rounded-md border border-border bg-muted/40 p-3 text-xs text-muted-foreground">
-          🔒 Le token API de conversion Meta a été retiré de la base de données pour des raisons de sécurité.
-          Stockez-le comme secret serveur (variable d'environnement) et utilisez-le uniquement depuis une fonction serveur.
+        <div className="rounded-md border border-border bg-muted/40 p-3 text-xs text-muted-foreground space-y-2">
+          <p>
+            🔒 <strong>Token API Meta Conversions</strong> : stocké de façon sécurisée comme secret serveur
+            (<code>META_CONVERSIONS_TOKEN</code>) et utilisé uniquement par l'Edge Function
+            <code> meta-conversion</code>. Il n'est jamais exposé au navigateur.
+          </p>
+          <p>
+            Le <strong>Pixel ID</strong> côté serveur est aussi stocké comme secret (<code>META_PIXEL_ID</code>)
+            pour l'API Conversions. Le champ ci-dessus reste utilisé pour le pixel côté navigateur.
+          </p>
+          <p>
+            Pour mettre à jour ces valeurs, utilisez la gestion des secrets de Lovable Cloud.
+          </p>
         </div>
         <div className="flex items-center gap-3">
           <Button onClick={save} disabled={saving}>
