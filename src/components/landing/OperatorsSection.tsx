@@ -13,6 +13,11 @@ interface Props {
 
 export function OperatorsSection({ lang }: Props) {
   const t = I18N[lang].operators;
+  const { data: settings } = useSiteSettings();
+  const url =
+    settings?.hero_cta_url && settings.hero_cta_url !== "#"
+      ? settings.hero_cta_url
+      : ASSETS.ctaLink;
 
   return (
     <section className="relative py-20 overflow-hidden">
@@ -26,7 +31,7 @@ export function OperatorsSection({ lang }: Props) {
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
           {ASSETS.operators.map((op, i) => (
-            <OperatorCard key={i} index={i} op={op} hoverLabel={t.hover} />
+            <OperatorCard key={i} index={i} op={op} hoverLabel={t.hover} url={url} />
           ))}
         </div>
       </div>
