@@ -4,6 +4,8 @@ import type { Lang } from "@/lib/i18n";
 import { I18N } from "@/lib/i18n";
 import { playSfx, registerSfx } from "@/lib/sfx";
 import hoverClickSfx from "@/assets/hover-click.mp3";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
+import { trackButtonClick } from "@/lib/tracking";
 
 interface Props {
   lang: Lang;
