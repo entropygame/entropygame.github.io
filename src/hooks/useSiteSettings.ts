@@ -8,7 +8,6 @@ export interface SiteSettings {
   go_cta_url: string;
   ga_measurement_id: string | null;
   meta_pixel_id: string | null;
-  meta_conversions_token: string | null;
   updated_at: string;
 }
 

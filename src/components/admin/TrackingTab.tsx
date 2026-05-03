@@ -12,7 +12,6 @@ export function TrackingTab() {
   const qc = useQueryClient();
   const [ga, setGa] = useState("");
   const [pixel, setPixel] = useState("");
-  const [token, setToken] = useState("");
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
 
@@ -20,7 +19,6 @@ export function TrackingTab() {
     if (settings) {
       setGa(settings.ga_measurement_id ?? "");
       setPixel(settings.meta_pixel_id ?? "");
-      setToken(settings.meta_conversions_token ?? "");
     }
   }, [settings]);
 
@@ -33,7 +31,6 @@ export function TrackingTab() {
       .update({
         ga_measurement_id: ga.trim() || null,
         meta_pixel_id: pixel.trim() || null,
-        meta_conversions_token: token.trim() || null,
       })
       .eq("id", settings.id);
     setSaving(false);
@@ -76,20 +73,9 @@ export function TrackingTab() {
             Disponible dans Meta Events Manager.
           </p>
         </div>
-        <div>
-          <Label htmlFor="token">Token API de conversion Meta</Label>
-          <Input
-            id="token"
-            type="password"
-            value={token}
-            onChange={(e) => setToken(e.target.value)}
-            placeholder="EAAxxxx…"
-          />
-          <p className="text-xs text-muted-foreground mt-1">
-            ⚠ Stocké uniquement pour usage côté serveur (n'est pas exposé dans les scripts du
-            site). À utiliser via une fonction serveur dédiée pour envoyer les événements à
-            l'API de conversion Meta.
-          </p>
+        <div className="rounded-md border border-border bg-muted/40 p-3 text-xs text-muted-foreground">
+          🔒 Le token API de conversion Meta a été retiré de la base de données pour des raisons de sécurité.
+          Stockez-le comme secret serveur (variable d'environnement) et utilisez-le uniquement depuis une fonction serveur.
         </div>
         <div className="flex items-center gap-3">
           <Button onClick={save} disabled={saving}>
