@@ -51,7 +51,6 @@ export type Database = {
           go_cta_url: string
           hero_cta_url: string
           id: string
-          meta_conversions_token: string | null
           meta_pixel_id: string | null
           updated_at: string
         }
@@ -61,7 +60,6 @@ export type Database = {
           go_cta_url?: string
           hero_cta_url?: string
           id?: string
-          meta_conversions_token?: string | null
           meta_pixel_id?: string | null
           updated_at?: string
         }
@@ -71,7 +69,6 @@ export type Database = {
           go_cta_url?: string
           hero_cta_url?: string
           id?: string
-          meta_conversions_token?: string | null
           meta_pixel_id?: string | null
           updated_at?: string
         }
