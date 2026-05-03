@@ -4,6 +4,8 @@ import type { Lang } from "@/lib/i18n";
 import { I18N } from "@/lib/i18n";
 import { playSfx, registerSfx } from "@/lib/sfx";
 import hoverClickSfx from "@/assets/hover-click.mp3";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
+import { trackButtonClick } from "@/lib/tracking";
 
 interface Props {
   lang: Lang;
@@ -11,6 +13,11 @@ interface Props {
 
 export function OperatorsSection({ lang }: Props) {
   const t = I18N[lang].operators;
+  const { data: settings } = useSiteSettings();
+  const url =
+    settings?.hero_cta_url && settings.hero_cta_url !== "#"
+      ? settings.hero_cta_url
+      : ASSETS.ctaLink;
 
   return (
     <section className="relative py-20 overflow-hidden">
@@ -24,7 +31,7 @@ export function OperatorsSection({ lang }: Props) {
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
           {ASSETS.operators.map((op, i) => (
-            <OperatorCard key={i} index={i} op={op} hoverLabel={t.hover} />
+            <OperatorCard key={i} index={i} op={op} hoverLabel={t.hover} url={url} />
           ))}
         </div>
       </div>
@@ -36,10 +43,12 @@ function OperatorCard({
   index,
   op,
   hoverLabel,
+  url,
 }: {
   index: number;
   op: { webp: string; png: string; webm: string };
   hoverLabel: string;
+  url: string;
 }) {
   const [hovered, setHovered] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -71,11 +80,16 @@ function OperatorCard({
   };
 
   return (
-    <div
-      className="relative aspect-[3/4] cursor-pointer group"
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={() => void trackButtonClick(`operator-card-${index + 1}`)}
+      className="relative aspect-[3/4] cursor-pointer group block"
       style={{ perspective: "1500px" }}
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
+      aria-label={`Operator ${index + 1}`}
     >
       <div
         className="relative w-full h-full transition-transform duration-700"
@@ -145,6 +159,6 @@ function OperatorCard({
           <div className="absolute inset-0 ring-inset ring-1 ring-primary/30 rounded-2xl pointer-events-none" />
         </div>
       </div>
-    </div>
+    </a>
   );
 }
