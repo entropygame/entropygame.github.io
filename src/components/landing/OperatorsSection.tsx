@@ -51,6 +51,7 @@ function OperatorCard({
   url: string;
 }) {
   const [hovered, setHovered] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -63,6 +64,7 @@ function OperatorCard({
 
   const onEnter = () => {
     setHovered(true);
+    setVideoLoaded(true);
     playClickSound();
     const v = videoRef.current;
     if (v) {
