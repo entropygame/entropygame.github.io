@@ -66,11 +66,6 @@ function OperatorCard({
     setHovered(true);
     setVideoLoaded(true);
     playClickSound();
-    const v = videoRef.current;
-    if (v) {
-      v.currentTime = 0;
-      v.play().catch(() => {});
-    }
   };
   const onLeave = () => {
     setHovered(false);
@@ -80,6 +75,25 @@ function OperatorCard({
       v.currentTime = 0;
     }
   };
+
+  // Once the video element is mounted (after first hover), load and play it
+  useEffect(() => {
+    if (!videoLoaded || !hovered) return;
+    const v = videoRef.current;
+    if (!v) return;
+    const tryPlay = () => {
+      try { v.currentTime = 0; } catch {}
+      v.play().catch(() => {});
+    };
+    if (v.readyState >= 2) {
+      tryPlay();
+    } else {
+      v.preload = "auto";
+      try { v.load(); } catch {}
+      v.addEventListener("loadeddata", tryPlay, { once: true });
+      return () => v.removeEventListener("loadeddata", tryPlay);
+    }
+  }, [videoLoaded, hovered]);
 
   return (
     <a
