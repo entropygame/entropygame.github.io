@@ -39,31 +39,45 @@ export function CarouselSection({ lang }: Props) {
     if (inView) setMounted(true);
   }, [inView]);
 
-  // Initialize once: wait for first video metadata to be ready
+  // Initialize once videos are mounted: wait for first video metadata
   useEffect(() => {
+    if (!mounted) return;
     const v = videoRefs.current[0];
     if (!v) return;
     if (v.readyState >= 2) {
       setInitialized(true);
+      v.play().catch(() => {});
       return;
     }
-    const onReady = () => setInitialized(true);
+    const onReady = () => {
+      setInitialized(true);
+      v.play().catch(() => {});
+    };
     v.addEventListener("loadeddata", onReady, { once: true });
+    // Force load since preload may be "none" on non-active until effect below sets it
+    try { v.load(); } catch {}
     return () => v.removeEventListener("loadeddata", onReady);
-  }, []);
+  }, [mounted]);
 
   // Manage which video plays
   useEffect(() => {
     videoRefs.current.forEach((v, i) => {
       if (!v) return;
       if (i === active) {
-        v.currentTime = 0;
-        v.play().catch(() => {});
+        try { v.currentTime = 0; } catch {}
+        const tryPlay = () => v.play().catch(() => {});
+        if (v.readyState >= 2) {
+          tryPlay();
+        } else {
+          v.preload = "auto";
+          try { v.load(); } catch {}
+          v.addEventListener("loadeddata", tryPlay, { once: true });
+        }
       } else {
         v.pause();
       }
     });
-  }, [active]);
+  }, [active, mounted]);
 
   // Autoplay advance
   useEffect(() => {
