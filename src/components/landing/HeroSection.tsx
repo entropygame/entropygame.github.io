@@ -47,6 +47,8 @@ export function HeroSection({ lang }: Props) {
         loop
         playsInline
         preload="auto"
+        // @ts-expect-error fetchpriority is valid HTML
+        fetchpriority="high"
         poster={ASSETS.hero.webp}
         style={{ objectPosition: "center 35%" }}
       >
