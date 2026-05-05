@@ -27,11 +27,17 @@ export function CarouselSection({ lang }: Props) {
       (entries) => {
         for (const e of entries) setInView(e.isIntersecting);
       },
-      { threshold: 0.25 }
+      { threshold: 0.25, rootMargin: "200px 0px" }
     );
     obs.observe(el);
     return () => obs.disconnect();
   }, []);
+
+  // Track if section has ever been near viewport (to mount videos lazily)
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    if (inView) setMounted(true);
+  }, [inView]);
 
   // Initialize once: wait for first video metadata to be ready
   useEffect(() => {
