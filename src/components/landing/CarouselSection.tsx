@@ -27,11 +27,17 @@ export function CarouselSection({ lang }: Props) {
       (entries) => {
         for (const e of entries) setInView(e.isIntersecting);
       },
-      { threshold: 0.25 }
+      { threshold: 0.25, rootMargin: "200px 0px" }
     );
     obs.observe(el);
     return () => obs.disconnect();
   }, []);
+
+  // Track if section has ever been near viewport (to mount videos lazily)
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    if (inView) setMounted(true);
+  }, [inView]);
 
   // Initialize once: wait for first video metadata to be ready
   useEffect(() => {
@@ -131,17 +137,19 @@ export function CarouselSection({ lang }: Props) {
                 }}
               >
                 <div className={`relative w-full h-full rounded-2xl overflow-hidden shadow-card ${isCenter ? "ring-1 ring-primary/40 shadow-glow" : "ring-1 ring-border"}`}>
-                  <video
-                    ref={(el) => { videoRefs.current[i] = el; }}
-                    className="w-full h-full object-cover"
-                    muted
-                    loop
-                    playsInline
-                    preload={i === 0 ? "auto" : "metadata"}
-                  >
-                    <source src={s.webm} type="video/webm" />
-                    <source src={s.mp4} type="video/mp4" />
-                  </video>
+                  {mounted && (
+                    <video
+                      ref={(el) => { videoRefs.current[i] = el; }}
+                      className="w-full h-full object-cover"
+                      muted
+                      loop
+                      playsInline
+                      preload={i === active ? "auto" : "none"}
+                    >
+                      <source src={s.webm} type="video/webm" />
+                      <source src={s.mp4} type="video/mp4" />
+                    </video>
+                  )}
                   {!isCenter && (
                     <div className="absolute inset-0 bg-background/40" />
                   )}

@@ -51,6 +51,7 @@ function OperatorCard({
   url: string;
 }) {
   const [hovered, setHovered] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -63,6 +64,7 @@ function OperatorCard({
 
   const onEnter = () => {
     setHovered(true);
+    setVideoLoaded(true);
     playClickSound();
     const v = videoRef.current;
     if (v) {
@@ -134,16 +136,18 @@ function OperatorCard({
           }}
         >
           <div className="absolute inset-0 bg-[oklch(0.08_0.03_265)]" />
-          <video
-            ref={videoRef}
-            className="absolute inset-0 w-full h-full object-cover"
-            muted
-            loop
-            playsInline
-            preload="metadata"
-          >
-            <source src={op.webm} type="video/webm" />
-          </video>
+          {videoLoaded && (
+            <video
+              ref={videoRef}
+              className="absolute inset-0 w-full h-full object-cover"
+              muted
+              loop
+              playsInline
+              preload="none"
+            >
+              <source src={op.webm} type="video/webm" />
+            </video>
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-background/30" />
           <div className="absolute top-3 left-3 flex items-center gap-1.5 text-[10px] tracking-[0.3em] uppercase text-primary">
             <span className="relative flex h-2 w-2">
