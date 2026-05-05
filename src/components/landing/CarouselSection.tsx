@@ -64,13 +64,20 @@ export function CarouselSection({ lang }: Props) {
     videoRefs.current.forEach((v, i) => {
       if (!v) return;
       if (i === active) {
-        v.currentTime = 0;
-        v.play().catch(() => {});
+        try { v.currentTime = 0; } catch {}
+        const tryPlay = () => v.play().catch(() => {});
+        if (v.readyState >= 2) {
+          tryPlay();
+        } else {
+          v.preload = "auto";
+          try { v.load(); } catch {}
+          v.addEventListener("loadeddata", tryPlay, { once: true });
+        }
       } else {
         v.pause();
       }
     });
-  }, [active]);
+  }, [active, mounted]);
 
   // Autoplay advance
   useEffect(() => {
