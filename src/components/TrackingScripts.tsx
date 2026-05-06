@@ -36,6 +36,7 @@ export function TrackingScripts() {
     if (pixelId && !document.getElementById("meta-pixel-script")) {
       const s = document.createElement("script");
       s.id = "meta-pixel-script";
+      s.dataset.metaPixelId = pixelId;
       s.innerHTML = `
         !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){
         n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
