@@ -87,12 +87,25 @@ function readCookie(name: string): string | undefined {
   return m ? decodeURIComponent(m[1]) : undefined;
 }
 
-async function sendMetaConversion(buttonId: string, sessionId: string) {
+function getMetaPixelId(): string | undefined {
+  if (typeof window === "undefined") return undefined;
+  return document.querySelector<HTMLScriptElement>("script[data-meta-pixel-id]")?.dataset.metaPixelId;
+}
+
+function trackMetaBrowserEvent(eventName: string, eventId: string) {
+  const fbq = typeof window !== "undefined" ? (window as typeof window & { fbq?: (...args: unknown[]) => void }).fbq : undefined;
+  if (typeof fbq === "function") {
+    fbq("track", eventName, {}, { eventID: eventId });
+  }
+}
+
+async function sendMetaConversion(buttonId: string, sessionId: string, eventId: string) {
   try {
     await supabase.functions.invoke("meta-conversion", {
       body: {
         eventName: "Lead",
-        eventId: `${buttonId}-${sessionId}-${Date.now()}`,
+        eventId,
+        pixelId: getMetaPixelId(),
         eventSourceUrl: typeof window !== "undefined" ? window.location.href : undefined,
         userAgent: typeof navigator !== "undefined" ? navigator.userAgent : undefined,
         fbp: readCookie("_fbp"),
@@ -108,6 +121,8 @@ export async function trackButtonClick(buttonId: string) {
   try {
     const sessionId = getOrCreateSessionId();
     const utm = parseUtm();
+    const eventId = `${buttonId}-${sessionId}-${Date.now()}`;
+    trackMetaBrowserEvent("Lead", eventId);
     await supabase.from("button_clicks").insert({
       button_id: buttonId,
       session_id: sessionId,
@@ -115,7 +130,7 @@ export async function trackButtonClick(buttonId: string) {
       utm_source: utm.utm_source,
       page_path: typeof window !== "undefined" ? window.location.pathname : null,
     });
-    void sendMetaConversion(buttonId, sessionId);
+    void sendMetaConversion(buttonId, sessionId, eventId);
   } catch (e) {
     console.warn("[tracking] click failed", e);
   }

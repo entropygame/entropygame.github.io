@@ -19,6 +19,7 @@ interface Payload {
   eventName?: string;
   eventSourceUrl?: string;
   eventId?: string;
+  pixelId?: string;
   userAgent?: string;
   email?: string;
   phone?: string;
@@ -33,9 +34,9 @@ Deno.serve(async (req) => {
     return new Response("Method not allowed", { status: 405, headers: corsHeaders });
   }
 
-  const token = Deno.env.get("META_CONVERSIONS_TOKEN");
-  const pixelId = Deno.env.get("META_PIXEL_ID");
-  if (!token || !pixelId) {
+  const token = Deno.env.get("META_CONVERSIONS_TOKEN")?.trim();
+  const envPixelId = Deno.env.get("META_PIXEL_ID")?.trim();
+  if (!token) {
     return new Response(
       JSON.stringify({ success: false, reason: "not_configured" }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
@@ -60,12 +61,31 @@ Deno.serve(async (req) => {
     });
   }
 
+  const bodyPixelId = body.pixelId?.toString().trim();
+  const pixelId = /^\d{8,30}$/.test(envPixelId ?? "")
+    ? envPixelId
+    : /^\d{8,30}$/.test(bodyPixelId ?? "")
+      ? bodyPixelId
+      : null;
+
+  if (!pixelId) {
+    console.error("Meta Pixel ID is missing or invalid. Expected a numeric Pixel/Dataset ID.");
+    return new Response(JSON.stringify({ success: false, reason: "invalid_pixel_id" }), {
+      status: 200,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
   const userData: Record<string, string> = {};
   if (body.email) userData.em = await sha256Hex(body.email);
   if (body.phone) userData.ph = await sha256Hex(body.phone.replace(/\D/g, ""));
   if (body.fbp) userData.fbp = body.fbp;
   if (body.fbc) userData.fbc = body.fbc;
   if (body.userAgent) userData.client_user_agent = body.userAgent.slice(0, 1000);
+  const clientIp =
+    req.headers.get("cf-connecting-ip") ??
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+  if (clientIp) userData.client_ip_address = clientIp;
 
   const payload = {
     data: [
