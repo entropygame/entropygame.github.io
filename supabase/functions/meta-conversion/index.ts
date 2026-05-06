@@ -82,6 +82,10 @@ Deno.serve(async (req) => {
   if (body.fbp) userData.fbp = body.fbp;
   if (body.fbc) userData.fbc = body.fbc;
   if (body.userAgent) userData.client_user_agent = body.userAgent.slice(0, 1000);
+  const clientIp =
+    req.headers.get("cf-connecting-ip") ??
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+  if (clientIp) userData.client_ip_address = clientIp;
 
   const payload = {
     data: [
