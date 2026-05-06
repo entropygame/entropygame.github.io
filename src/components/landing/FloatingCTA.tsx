@@ -70,7 +70,7 @@ export function FloatingCTA({ lang, floating = false }: Props) {
             animation: "shimmer 3s linear infinite",
           }}
         />
-        <span className="relative text-3xl">{t.cta}</span>
+        <span className="relative text-2xl">{t.cta}</span>
         <svg className="relative w-4 h-4 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
           <path d="M5 12h14M13 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
