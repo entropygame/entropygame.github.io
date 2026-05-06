@@ -236,7 +236,7 @@ export const I18N: Record<Lang, Dict> = {
       headline: "Project Entropy",
       title: "Chinh Phục Điều Chưa Biết",
       sub: "Chỉ huy hạm đội. \nTuyển mộ anh hùng ngoài hành tinh. \nChiến đấu vì tài nguyên cuối cùng của thiên hà.",
-      cta: "Chơi Ngay",
+      cta: "Chơi Ngay - Miễn Phí",
       award1: "Quán quân — Trò chơi Hay nhất 2026",
       award2: "Giải thưởng Lựa chọn của Người chơi",
       platform: "Chỉ Windows Desktop",
