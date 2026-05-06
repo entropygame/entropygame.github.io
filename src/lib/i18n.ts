@@ -156,7 +156,7 @@ export const I18N: Record<Lang, Dict> = {
       headline: "Project Entropy",
       title: "Conquérir l'Inconnu",
       sub: "Commandez des flottes. \nRecrutez des héros aliens. \nCombattez pour les dernières ressources de la galaxie.",
-      cta: "Jouer Maintenant",
+      cta: "Jouer Maintenant - Gratuit",
       award1: "Grand Gagnant — Meilleur Jeu 2026",
       award2: "Prix du Choix des Joueurs",
       platform: "Windows Desktop Uniquement",
