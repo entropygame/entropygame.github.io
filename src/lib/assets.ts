@@ -4,7 +4,7 @@ export const ASSETS = {
     jpg: "https://cdn.digivadz.com/back%20ground%20fixe.jpg",
   },
   hero: {
-    video: "https://cdn.digivadz.com/Video%20Background%20Hero%20Section%201.webm",
+    video: "https://cdn.digivadz.com/Video%20Background%20Hero%20Section%201.mp4",
     webp: "https://cdn.digivadz.com/BackGround%20Hero%20Section.webp",
     png: "https://cdn.digivadz.com/BackGround%20Hero%20Section.png",
   },
@@ -13,8 +13,7 @@ export const ASSETS = {
     png: "https://cdn.digivadz.com/Logo%20Entropy.png",
   },
   slides: [1, 2, 3, 4, 5].map((n) => ({
-    webm: `https://cdn.digivadz.com/Slides/Slide%20${n}.webm`,
-    mp4: `https://cdn.digivadz.com/Slides/Slide%20${n}.mp4`,
+    mp4: `https://cdn.digivadz.com/Slides/New%20Slides%20Compressed/Slide%20${n}.mp4`,
   })),
   operators: [1, 2, 3, 4].map((n) => ({
     webp: `https://cdn.digivadz.com/Joueurs/Joueur${n}.webp`,

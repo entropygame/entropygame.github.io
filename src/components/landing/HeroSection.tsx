@@ -52,7 +52,7 @@ export function HeroSection({ lang }: Props) {
         poster={ASSETS.hero.webp}
         style={{ objectPosition: "center 35%" }}
       >
-        <source src={ASSETS.hero.video} type="video/webm" />
+        <source src={ASSETS.hero.video} type="video/mp4" />
       </video>
 
       {/* Readability + brand overlays */}
