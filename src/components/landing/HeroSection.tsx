@@ -38,7 +38,7 @@ export function HeroSection({ lang }: Props) {
         />
       </picture>
 
-      {/* Hero video — elegant cinematic framing */}
+      {/* Hero video — defer to keep first paint fast; poster covers the gap */}
       <video
         ref={videoRef}
         className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-700 ${videoReady ? "opacity-100" : "opacity-0"}`}
@@ -46,9 +46,9 @@ export function HeroSection({ lang }: Props) {
         muted
         loop
         playsInline
-        preload="auto"
+        preload="metadata"
         // @ts-expect-error fetchpriority is valid HTML
-        fetchpriority="high"
+        fetchpriority="low"
         poster={ASSETS.hero.webp}
         style={{ objectPosition: "center 35%" }}
       >
