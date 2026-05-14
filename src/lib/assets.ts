@@ -18,7 +18,7 @@ export const ASSETS = {
   operators: [1, 2, 3, 4].map((n) => ({
     webp: `https://cdn.digivadz.com/Joueurs/Joueur${n}.webp`,
     png: `https://cdn.digivadz.com/Joueurs/Joueur${n}.png`,
-    webm: `https://cdn.digivadz.com/Joueurs/Joueur${n}.webm`,
+    mp4: `https://cdn.digivadz.com/Joueurs/Joueur${n}.mp4`,
   })),
   go: {
     webp: "https://cdn.digivadz.com/Go_section.webp",
