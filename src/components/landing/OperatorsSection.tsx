@@ -46,7 +46,7 @@ function OperatorCard({
   url,
 }: {
   index: number;
-  op: { webp: string; png: string; webm: string };
+  op: { webp: string; png: string; mp4: string };
   hoverLabel: string;
   url: string;
 }) {
@@ -159,7 +159,7 @@ function OperatorCard({
               playsInline
               preload="none"
             >
-              <source src={op.webm} type="video/webm" />
+              <source src={op.mp4} type="video/mp4" />
             </video>
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-background/30" />
