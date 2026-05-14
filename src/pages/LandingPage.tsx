@@ -26,7 +26,7 @@ export default function LandingPage() {
       if (saved && SUPPORTED_LANGS.includes(saved as Lang)) initial = saved as Lang;
     } catch {}
     setLang(initial ?? detectLang());
-    setAllowed(isWindowsDesktop());
+    setAllowed(true);
     initVisitTracking();
   }, []);
 
