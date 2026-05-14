@@ -160,7 +160,6 @@ export function CarouselSection({ lang }: Props) {
                       playsInline
                       preload={i === active ? "auto" : "none"}
                     >
-                      <source src={s.webm} type="video/webm" />
                       <source src={s.mp4} type="video/mp4" />
                     </video>
                   )}
