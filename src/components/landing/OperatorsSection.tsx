@@ -2,8 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { ASSETS } from "@/lib/assets";
 import type { Lang } from "@/lib/i18n";
 import { I18N } from "@/lib/i18n";
-import { playSfx, registerSfx } from "@/lib/sfx";
-import hoverClickSfx from "@/assets/hover-click.mp3";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { trackButtonClick } from "@/lib/tracking";
 
@@ -46,7 +44,7 @@ function OperatorCard({
   url,
 }: {
   index: number;
-  op: { webp: string; png: string; mp4: string };
+  op: { image: string; mp4: string };
   hoverLabel: string;
   url: string;
 }) {
@@ -54,18 +52,9 @@ function OperatorCard({
   const [videoLoaded, setVideoLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  useEffect(() => {
-    registerSfx(hoverClickSfx, 0.6);
-  }, []);
-
-  const playClickSound = () => {
-    playSfx(hoverClickSfx, 0.6);
-  };
-
   const onEnter = () => {
     setHovered(true);
     setVideoLoaded(true);
-    playClickSound();
   };
   const onLeave = () => {
     setHovered(false);
@@ -120,15 +109,12 @@ function OperatorCard({
           style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
         >
           <div className="absolute inset-0 bg-gradient-to-br from-[oklch(0.18_0.06_265)] to-[oklch(0.1_0.04_270)]" />
-          <picture>
-            <source srcSet={op.webp} type="image/webp" />
-            <img
-              src={op.png}
-              alt={`Operator ${index + 1}`}
-              className="absolute inset-0 w-full h-full object-contain object-bottom"
-              loading="lazy"
-            />
-          </picture>
+          <img
+            src={op.image}
+            alt={`Operator ${index + 1}`}
+            className="absolute inset-0 w-full h-full object-contain object-bottom"
+            loading="lazy"
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/10 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 p-4">
             <div className="text-[10px] tracking-[0.3em] uppercase text-primary/80 mb-1">Operator 0{index + 1}</div>

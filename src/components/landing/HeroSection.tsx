@@ -28,15 +28,12 @@ export function HeroSection({ lang }: Props) {
       className="relative w-full h-screen min-h-[640px] overflow-hidden"
     >
       {/* Fallback poster */}
-      <picture className="absolute inset-0">
-        <source srcSet={ASSETS.hero.webp} type="image/webp" />
-        <img
-          src={ASSETS.hero.png}
-          alt=""
-          className="w-full h-full object-cover object-center"
-          aria-hidden
-        />
-      </picture>
+      <img
+        src={ASSETS.hero.poster}
+        alt=""
+        className="absolute inset-0 w-full h-full object-cover object-center"
+        aria-hidden
+      />
 
       {/* Hero video — defer to keep first paint fast; poster covers the gap */}
       <video
@@ -47,9 +44,7 @@ export function HeroSection({ lang }: Props) {
         loop
         playsInline
         preload="metadata"
-        // @ts-expect-error fetchpriority is valid HTML
-        fetchpriority="low"
-        poster={ASSETS.hero.webp}
+        poster={ASSETS.hero.poster}
         style={{ objectPosition: "center 35%" }}
       >
         <source src={ASSETS.hero.video} type="video/mp4" />
@@ -66,16 +61,13 @@ export function HeroSection({ lang }: Props) {
       <div className="relative z-10 h-full w-full flex flex-col items-center px-6 py-8 md:py-10 lg:py-12 animate-fade-up">
         {/* TOP — Logo */}
         <div className="flex-shrink-0">
-          <picture>
-            <source srcSet={ASSETS.logo.webp} type="image/webp" />
-            <img
-              src={ASSETS.logo.png}
-              alt={t.headline}
-              className="mx-auto h-24 md:h-32 lg:h-36 w-auto object-contain drop-shadow-[0_0_30px_oklch(0.72_0.2_245/0.6)]"
-              width={400}
-              height={140}
-            />
-          </picture>
+          <img
+            src={ASSETS.logo}
+            alt={t.headline}
+            className="mx-auto h-24 md:h-32 lg:h-36 w-auto object-contain drop-shadow-[0_0_30px_oklch(0.72_0.2_245/0.6)]"
+            width={400}
+            height={140}
+          />
         </div>
 
         {/* CENTER — Title + subtitle */}
