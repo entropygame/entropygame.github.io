@@ -77,6 +77,7 @@ export default function LandingPage() {
       </div>
 
       {showFloating && <FloatingCTA lang={lang} floating />}
+      <VideoPopup lang={lang} />
     </div>
   );
 }
