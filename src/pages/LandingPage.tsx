@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { ASSETS } from "@/lib/assets";
-import { detectLang, isWindowsDesktop, type Lang } from "@/lib/i18n";
+import { detectLang, type Lang } from "@/lib/i18n";
 import { HeroSection } from "@/components/landing/HeroSection";
 import { CarouselSection } from "@/components/landing/CarouselSection";
 import { OperatorsSection } from "@/components/landing/OperatorsSection";
 import { GoSection } from "@/components/landing/GoSection";
 import { FloatingCTA } from "@/components/landing/FloatingCTA";
-import { FallbackScreen } from "@/components/landing/FallbackScreen";
 import { LanguageSwitcher } from "@/components/landing/LanguageSwitcher";
 import { StarField } from "@/components/landing/StarField";
 import { I18N, SUPPORTED_LANGS } from "@/lib/i18n";
@@ -16,7 +15,6 @@ const LANG_STORAGE_KEY = "pe_lang";
 
 export default function LandingPage() {
   const [lang, setLang] = useState<Lang>("en");
-  const [allowed, setAllowed] = useState<boolean | null>(null);
   const [showFloating, setShowFloating] = useState(false);
 
   useEffect(() => {
@@ -26,7 +24,6 @@ export default function LandingPage() {
       if (saved && SUPPORTED_LANGS.includes(saved as Lang)) initial = saved as Lang;
     } catch {}
     setLang(initial ?? detectLang());
-    setAllowed(true);
     initVisitTracking();
   }, []);
 
@@ -43,7 +40,6 @@ export default function LandingPage() {
   }, [lang]);
 
   useEffect(() => {
-    if (allowed !== true) return;
     const heroEl = document.getElementById("hero");
     if (!heroEl) return;
     const io = new IntersectionObserver(
@@ -52,28 +48,12 @@ export default function LandingPage() {
     );
     io.observe(heroEl);
     return () => io.disconnect();
-  }, [allowed]);
-
-  if (allowed === null) {
-    return <div className="min-h-screen bg-background" />;
-  }
-
-  if (!allowed) {
-    return (
-      <>
-        <LanguageSwitcher lang={lang} onChange={handleLangChange} />
-        <FallbackScreen lang={lang} />
-      </>
-    );
-  }
+  }, []);
 
   const fixedBgStyle: React.CSSProperties = {
-    backgroundImage: `linear-gradient(oklch(0.05 0.03 265 / 0.85), oklch(0.05 0.03 265 / 0.92)), url(${ASSETS.fixedBg.webp})`,
+    backgroundImage: `linear-gradient(oklch(0.05 0.03 265 / 0.85), oklch(0.05 0.03 265 / 0.92)), url(${ASSETS.fixedBg})`,
     backgroundSize: "cover",
     backgroundPosition: "center",
-    // background-attachment: fixed causes severe scroll jank on most browsers
-    // (forces full repaint per scroll frame). Use a normal scrolling background
-    // — visually nearly identical, dramatically smoother.
   };
 
   return (
@@ -82,7 +62,6 @@ export default function LandingPage() {
       <HeroSection lang={lang} />
 
       <div style={fixedBgStyle} className="relative isolate overflow-hidden">
-        {/* Galactic star field — sits above the fixed bg, below all content */}
         <StarField className="z-0" />
 
         <div className="relative z-10">
