@@ -6,7 +6,6 @@ import { CarouselSection } from "@/components/landing/CarouselSection";
 import { OperatorsSection } from "@/components/landing/OperatorsSection";
 import { GoSection } from "@/components/landing/GoSection";
 import { FloatingCTA } from "@/components/landing/FloatingCTA";
-import { VideoPopup } from "@/components/landing/VideoPopup";
 import { LanguageSwitcher } from "@/components/landing/LanguageSwitcher";
 import { StarField } from "@/components/landing/StarField";
 import { I18N, SUPPORTED_LANGS } from "@/lib/i18n";
@@ -77,7 +76,6 @@ export default function LandingPage() {
       </div>
 
       {showFloating && <FloatingCTA lang={lang} floating />}
-      <VideoPopup lang={lang} />
     </div>
   );
 }
