@@ -18,6 +18,7 @@ const LANG_STORAGE_KEY = "pe_lang";
 export default function LandingPage() {
   const [lang, setLang] = useState<Lang>("en");
   const [showFloating, setShowFloating] = useState(false);
+  const { data: settings } = useSiteSettings();
 
   useEffect(() => {
     let initial: Lang | null = null;
