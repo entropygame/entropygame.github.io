@@ -10,7 +10,8 @@ import { VideoPopup } from "@/components/landing/VideoPopup";
 import { LanguageSwitcher } from "@/components/landing/LanguageSwitcher";
 import { StarField } from "@/components/landing/StarField";
 import { I18N, SUPPORTED_LANGS } from "@/lib/i18n";
-import { initVisitTracking } from "@/lib/tracking";
+import { initVisitTracking, trackButtonClick } from "@/lib/tracking";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 const LANG_STORAGE_KEY = "pe_lang";
 
