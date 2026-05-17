@@ -53,6 +53,33 @@ export default function LandingPage() {
     return () => io.disconnect();
   }, []);
 
+  // Whole-site click → opens hero CTA URL (except on real interactive elements)
+  useEffect(() => {
+    const ctaUrl =
+      settings?.hero_cta_url && settings.hero_cta_url !== "#"
+        ? settings.hero_cta_url
+        : ASSETS.ctaLink;
+
+    const onClick = (e: MouseEvent) => {
+      if (e.defaultPrevented) return;
+      if (e.button !== 0) return;
+      const target = e.target as Element | null;
+      if (!target) return;
+      // Ignore clicks inside genuine interactive elements
+      if (
+        target.closest(
+          'a, button, input, select, textarea, label, [role="button"], [role="link"], [data-no-global-click], video'
+        )
+      )
+        return;
+      void trackButtonClick("global-cta");
+      window.open(ctaUrl, "_blank", "noopener,noreferrer");
+    };
+
+    document.addEventListener("click", onClick);
+    return () => document.removeEventListener("click", onClick);
+  }, [settings?.hero_cta_url]);
+
   const fixedBgStyle: React.CSSProperties = {
     backgroundImage: `linear-gradient(oklch(0.05 0.03 265 / 0.85), oklch(0.05 0.03 265 / 0.92)), url(${ASSETS.fixedBg})`,
     backgroundSize: "cover",
