@@ -77,7 +77,6 @@ export function VideoPopup({ lang }: Props) {
                 alt=""
                 aria-hidden="true"
                 className="absolute inset-0 w-full h-full object-contain select-none pointer-events-none"
-                style={{ filter: "drop-shadow(0 6px 14px oklch(0 0 0 / 0.45)) drop-shadow(0 0 18px oklch(0.72 0.19 50 / 0.45))" }}
                 draggable={false}
               />
               <span
