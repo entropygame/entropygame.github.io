@@ -3,7 +3,7 @@ import type { Lang } from "@/lib/i18n";
 import { I18N } from "@/lib/i18n";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { trackButtonClick } from "@/lib/tracking";
-import buttonImg from "@/assets/Bouton.png.asset.json";
+import buttonImg from "@/assets/BoutonNew.png.asset.json";
 
 interface Props {
   lang: Lang;
