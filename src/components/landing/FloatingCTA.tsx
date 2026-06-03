@@ -3,7 +3,7 @@ import type { Lang } from "@/lib/i18n";
 import { I18N } from "@/lib/i18n";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { trackButtonClick } from "@/lib/tracking";
-import buttonImg from "@/assets/Bouton.png.asset.json";
+import buttonImg from "@/assets/BoutonNew.png.asset.json";
 
 interface Props {
   lang: Lang;
@@ -38,25 +38,25 @@ export function FloatingCTA({ lang, floating = false }: Props) {
       aria-label={t.cta}
     >
       <span
-        className="relative block w-[420px] md:w-[560px] max-w-[88vw] animate-cta-breathe"
-        style={{ aspectRatio: "1920 / 290" }}
+        className="relative block w-[540px] md:w-[760px] max-w-[94vw] animate-cta-breathe"
+        style={{ aspectRatio: "1634 / 300" }}
       >
         <img
           src={buttonImg.url}
           alt=""
           aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-contain select-none pointer-events-none drop-shadow-[0_0_24px_oklch(0.72_0.19_50/0.55)]"
+          className="absolute inset-0 w-full h-full object-contain select-none pointer-events-none"
+          style={{ filter: "drop-shadow(0 6px 14px oklch(0 0 0 / 0.45)) drop-shadow(0 0 18px oklch(0.72 0.19 50 / 0.45))" }}
           draggable={false}
         />
         {/* shimmer constrained to the orange bar area */}
         <span
           className="absolute pointer-events-none overflow-hidden"
           style={{
-            top: "18%",
-            bottom: "18%",
-            left: "24%",
-            right: "10%",
-            borderRadius: "9999px",
+            top: "29.3%",
+            bottom: "21.7%",
+            left: "20.6%",
+            right: "17%",
             background:
               "linear-gradient(110deg, transparent 30%, oklch(1 0 0 / 0.45) 50%, transparent 70%)",
             backgroundSize: "200% 100%",
@@ -66,16 +66,18 @@ export function FloatingCTA({ lang, floating = false }: Props) {
         />
         {/* Text overlay centered in the orange bar */}
         <span
-          className="absolute inset-0 flex items-center justify-center font-bold text-white uppercase pointer-events-none"
+          className="absolute flex items-center justify-center font-bold text-white uppercase pointer-events-none"
           style={{
-            letterSpacing: "0.22em",
+            top: "29.3%",
+            bottom: "21.7%",
+            left: "20.6%",
+            right: "17%",
+            letterSpacing: "0.1em",
             fontFamily: "var(--font-display)",
-            paddingLeft: "22%",
-            paddingRight: "10%",
-            textShadow: "0 2px 8px oklch(0 0 0 / 0.45)",
+            textShadow: "0 2px 8px oklch(0 0 0 / 0.55)",
           }}
         >
-          <span className="text-base md:text-2xl whitespace-nowrap">{t.cta}</span>
+          <span className="text-[11px] md:text-base lg:text-lg whitespace-nowrap">{t.cta}</span>
         </span>
       </span>
     </a>
