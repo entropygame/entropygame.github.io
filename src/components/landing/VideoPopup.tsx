@@ -65,26 +65,47 @@ export function VideoPopup({ lang }: Props) {
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => void trackButtonClick("popup-cta")}
-            className="pointer-events-auto group inline-flex items-center justify-center"
+            className="pointer-events-auto group inline-block"
             aria-label={t.cta}
           >
             <span
-              className="relative inline-flex items-center gap-3 px-7 py-3 rounded-full text-base font-bold text-white bg-gradient-cta shadow-cta overflow-hidden animate-cta-breathe uppercase"
-              style={{ letterSpacing: "0.22em", fontFamily: "var(--font-display)" }}
+              className="relative block w-[360px] md:w-[480px] max-w-[80vw] animate-cta-breathe"
+              style={{ aspectRatio: "1920 / 290" }}
             >
+              <img
+                src={buttonImg.url}
+                alt=""
+                aria-hidden="true"
+                className="absolute inset-0 w-full h-full object-contain select-none pointer-events-none drop-shadow-[0_0_24px_oklch(0.72_0.19_50/0.55)]"
+                draggable={false}
+              />
               <span
-                className="absolute inset-0 opacity-70 pointer-events-none"
+                className="absolute pointer-events-none overflow-hidden"
                 style={{
+                  top: "18%",
+                  bottom: "18%",
+                  left: "24%",
+                  right: "10%",
+                  borderRadius: "9999px",
                   background:
-                    "linear-gradient(110deg, transparent 30%, oklch(1 0 0 / 0.35) 50%, transparent 70%)",
+                    "linear-gradient(110deg, transparent 30%, oklch(1 0 0 / 0.45) 50%, transparent 70%)",
                   backgroundSize: "200% 100%",
                   animation: "shimmer 3s linear infinite",
+                  mixBlendMode: "screen",
                 }}
               />
-              <span className="relative text-xl">{t.cta}</span>
-              <svg className="relative w-4 h-4 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <path d="M5 12h14M13 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
+              <span
+                className="absolute inset-0 flex items-center justify-center font-bold text-white uppercase pointer-events-none"
+                style={{
+                  letterSpacing: "0.22em",
+                  fontFamily: "var(--font-display)",
+                  paddingLeft: "22%",
+                  paddingRight: "10%",
+                  textShadow: "0 2px 8px oklch(0 0 0 / 0.45)",
+                }}
+              >
+                <span className="text-sm md:text-xl whitespace-nowrap">{t.cta}</span>
+              </span>
             </span>
           </a>
         </div>
