@@ -39,7 +39,7 @@ export function FloatingCTA({ lang, floating = false }: Props) {
     >
       <span
         className="relative block w-[540px] md:w-[760px] max-w-[94vw] animate-cta-breathe"
-        style={{ aspectRatio: "1620 / 277" }}
+        style={{ aspectRatio: "1920 / 230" }}
       >
         <img
           src={buttonImg.url}
@@ -52,10 +52,10 @@ export function FloatingCTA({ lang, floating = false }: Props) {
         <span
           className="absolute pointer-events-none overflow-hidden"
           style={{
-            top: "20.58%",
-            bottom: "23.47%",
-            left: "20.86%",
-            right: "19.57%",
+            top: "17%",
+            bottom: "17%",
+            left: "2%",
+            right: "16%",
             background:
               "linear-gradient(110deg, transparent 30%, oklch(1 0 0 / 0.45) 50%, transparent 70%)",
             backgroundSize: "200% 100%",
@@ -67,18 +67,19 @@ export function FloatingCTA({ lang, floating = false }: Props) {
         <span
           className="absolute flex items-center justify-center font-bold text-white uppercase pointer-events-none"
           style={{
-            top: "20.58%",
-            bottom: "23.47%",
-            left: "20.86%",
-            right: "19.57%",
-            letterSpacing: "0.1em",
+            top: "17%",
+            bottom: "17%",
+            left: "2%",
+            right: "16%",
+            letterSpacing: "0.08em",
             fontFamily: "var(--font-display)",
             textShadow: "0 2px 8px oklch(0 0 0 / 0.55)",
           }}
         >
-          <span className="text-[11px] md:text-base lg:text-lg whitespace-nowrap">{t.cta}</span>
+          <span className="text-[15px] md:text-2xl lg:text-3xl whitespace-nowrap">{t.cta}</span>
         </span>
       </span>
+
     </a>
   );
 }
