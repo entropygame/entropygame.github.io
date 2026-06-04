@@ -4,7 +4,6 @@ import type { Lang } from "@/lib/i18n";
 import { I18N } from "@/lib/i18n";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { trackButtonClick } from "@/lib/tracking";
-import buttonImg from "@/assets/BoutonFinal.png.asset.json";
 
 interface Props {
   lang: Lang;
@@ -73,7 +72,7 @@ export function VideoPopup({ lang }: Props) {
               style={{ aspectRatio: "1920 / 230" }}
             >
               <img
-                src={buttonImg.url}
+                src="/BoutonFinal.png"
                 alt=""
                 aria-hidden="true"
                 className="absolute inset-0 w-full h-full object-contain select-none pointer-events-none"
