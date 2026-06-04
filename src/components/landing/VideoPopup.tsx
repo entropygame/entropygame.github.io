@@ -72,7 +72,7 @@ export function VideoPopup({ lang }: Props) {
               style={{ aspectRatio: "1920 / 230" }}
             >
               <img
-                src={buttonImg.url}
+                src="/BoutonFinal.png"
                 alt=""
                 aria-hidden="true"
                 className="absolute inset-0 w-full h-full object-contain select-none pointer-events-none"
