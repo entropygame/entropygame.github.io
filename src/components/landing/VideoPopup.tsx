@@ -4,7 +4,7 @@ import type { Lang } from "@/lib/i18n";
 import { I18N } from "@/lib/i18n";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { trackButtonClick } from "@/lib/tracking";
-import buttonImg from "@/assets/BoutonNew.png.asset.json";
+import buttonImg from "@/assets/BoutonClean.png.asset.json";
 
 interface Props {
   lang: Lang;
@@ -70,7 +70,7 @@ export function VideoPopup({ lang }: Props) {
           >
             <span
               className="relative block w-[440px] md:w-[640px] max-w-[88vw] animate-cta-breathe"
-              style={{ aspectRatio: "1634 / 300" }}
+              style={{ aspectRatio: "1620 / 277" }}
             >
               <img
                 src={buttonImg.url}
@@ -82,10 +82,10 @@ export function VideoPopup({ lang }: Props) {
               <span
                 className="absolute pointer-events-none overflow-hidden"
                 style={{
-                  top: "29.3%",
-                  bottom: "21.7%",
-                  left: "20.6%",
-                  right: "17%",
+                  top: "20.58%",
+                  bottom: "23.47%",
+                  left: "20.86%",
+                  right: "19.57%",
                   background:
                     "linear-gradient(110deg, transparent 30%, oklch(1 0 0 / 0.45) 50%, transparent 70%)",
                   backgroundSize: "200% 100%",
@@ -96,10 +96,10 @@ export function VideoPopup({ lang }: Props) {
               <span
                 className="absolute flex items-center justify-center font-bold text-white uppercase pointer-events-none"
                 style={{
-                  top: "29.3%",
-                  bottom: "21.7%",
-                  left: "20.6%",
-                  right: "17%",
+                  top: "20.58%",
+                  bottom: "23.47%",
+                  left: "20.86%",
+                  right: "19.57%",
                   letterSpacing: "0.1em",
                   fontFamily: "var(--font-display)",
                   textShadow: "0 2px 8px oklch(0 0 0 / 0.55)",
