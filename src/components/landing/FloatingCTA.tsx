@@ -23,7 +23,7 @@ export function FloatingCTA({ lang, floating = false }: Props) {
       : ASSETS.ctaLink;
 
   const fixedStyle: React.CSSProperties | undefined = floating
-    ? { position: "fixed", right: "28px", bottom: "28px" }
+    ? { position: "fixed", left: "50%", bottom: "28px", transform: "translateX(-50%)" }
     : undefined;
 
   return (
